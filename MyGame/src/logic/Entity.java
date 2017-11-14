@@ -1,12 +1,13 @@
 package logic;
 
-import java.awt.Image;
 
+
+import javafx.scene.image.Image;
 import sharedObject.IRenderable;
 
 public abstract class Entity implements IRenderable{
 
-	protected int x,y;
+	protected double x,y;
 	protected int z;
 	protected boolean visible,destroyed;
 	
@@ -28,6 +29,10 @@ public abstract class Entity implements IRenderable{
 		return destroyed;
 	}
 	
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
 	public boolean isVisible(){
 		return visible;
 	}
@@ -36,11 +41,11 @@ public abstract class Entity implements IRenderable{
         return image;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
     
