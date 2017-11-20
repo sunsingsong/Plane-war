@@ -3,17 +3,18 @@ package logic;
 import java.util.ArrayList;
 import java.util.List;
 
+import drawing.GameCanvas;
 import sharedObject.RenderableHolder;
 
 public class GameLogic {
 	private List<Entity> gameObjectContainer;
-	
+	private GameCanvas canvas;
 	private Tank tank;
 	
-	public GameLogic(){
+	public GameLogic(GameCanvas canvas){
 		this.gameObjectContainer = new ArrayList<Entity>();
-	
-		tank = new Tank(320,240);
+		this.canvas = canvas;
+		tank = new Tank(400,300);
 		addNewObject(tank);
 	}
 	
@@ -22,7 +23,16 @@ public class GameLogic {
 		RenderableHolder.getInstance().add(entity);
 	}
 	
+	
 	public void logicUpdate(){
-		tank.update();
+		for(Entity e :gameObjectContainer) {
+			e.update();
+		}
+		if(tank.fire) {
+			Bullet aBullet = new Bullet(tank.getX(),tank.getY(),tank.direction);
+			addNewObject(aBullet);
+		}
+		canvas.paintComponent();
+		
 	}
 }

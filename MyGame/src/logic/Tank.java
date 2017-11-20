@@ -6,17 +6,21 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
+import sharedObject.RenderableHolder;
 
 public class Tank extends CollidableEntity {
+	private int tick=0;
+	private int lastTick=0;
+	public int direction =0;
+	public boolean fire = false;
 
 	private static final int speed = 5;
 	private int angle = 0; // angle 0 = EAST
-
 	private boolean flashing = false;
 	private int flashCounter = 0;
 	private int flashDurationCounter = 0;
 
-	public Tank(double x, double y) {
+	public Tank(int x, int y) {
 		this.x = x;
 		this.y = y;
 		this.radius = 20;
@@ -47,6 +51,7 @@ public class Tank extends CollidableEntity {
 	}
 
 	public void update() {
+		this.fire = false;
 		if (flashing) {
 			if (flashCounter == 0) {
 				this.visible = true;
@@ -66,25 +71,45 @@ public class Tank extends CollidableEntity {
 		}
 		if (InputUtility.getKeyPressed(KeyCode.W)) {
 			forward();
+			this.direction=0;
 			this.setImage(new Image("res/playerTank_up.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.S)) {
 			backward();
+			this.direction=1;
 			this.setImage(new Image("res/playerTank_down.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
 			turnleft();
+			this.direction=2;
 			this.setImage(new Image("res/playerTank_left.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.D)) {
 			turnright();
+			this.direction=3;
 			this.setImage(new Image("res/playerTank_right.png"));
 		}
+		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
+			if(tick>=lastTick) {
+				tick=lastTick;
+				this.fire = true;
+				fire();
+				lastTick+=50
+						;
+			}
+			//tick++;
+		}
+		tick++;
 		
 //		if (InputUtility.isLeftClickTriggered()) {
 //			this.x = InputUtility.mouseX;
 //			this.y = InputUtility.mouseY;
 //		}
+	}
+	
+	public void fire() {
+//		Bullet aBullet = new Bullet(x,y,direction);
+//		RenderableHolder.getInstance().getEntities().add(aBullet);
 	}
 
 	@Override

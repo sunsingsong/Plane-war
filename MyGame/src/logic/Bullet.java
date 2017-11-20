@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 
-public class Bullet extends Collision {
+public class Bullet extends CollidableEntity {
 	 private final int BULLET_SPEED = 3;
 	    private final int BOARD_WIDTH = 640;
 	    private final int BOARD_HEIGHT = 380;
@@ -32,15 +32,15 @@ public class Bullet extends Collision {
 	        //isEnemy = Enemy;
 	        //getImageDimensions();
 	    }
-	    public void move() {
+	    public void update() {
 	        if (direction == 0) {
 	            y -= BULLET_SPEED;
 	        } else if (direction == 1) {
-	            x += BULLET_SPEED;
-	        } else if (direction == 2) {
 	            y += BULLET_SPEED;
+	        } else if (direction == 2) {
+	            x -= BULLET_SPEED;
 	        } else if (direction == 3) {
-	             x-= BULLET_SPEED;
+	             x+= BULLET_SPEED;
 	        }
 	        if (x > BOARD_WIDTH + 100 + width) {
 	        	visible = false;
@@ -65,7 +65,7 @@ public class Bullet extends Collision {
 		@Override
 		public void draw(GraphicsContext gc) {
 			// TODO Auto-generated method stub
-			image = new Image("sun.png");
+			image = new Image("res/sun.png");
 			gc.drawImage(image, this.x, this.y);
 			
 			

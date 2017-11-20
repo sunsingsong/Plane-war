@@ -7,7 +7,7 @@ import sharedObject.IRenderable;
 
 public abstract class Entity implements IRenderable{
 
-	protected double x,y;
+	protected int x,y;
 	protected int z;
 	protected boolean visible,destroyed;
 	
@@ -41,16 +41,20 @@ public abstract class Entity implements IRenderable{
         return image;
     }
 
-    public double getX() {
+    public int getX() {
         return x;
     }
 
-    public double getY() {
+    public int getY() {
         return y;
     }
     
 	public int getZ(){
 		return z;
+	}
+	
+	public void update() {
+		this.update();
 	}
 	
 	
