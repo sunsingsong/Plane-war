@@ -6,7 +6,9 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
+import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
+import window.SceneManager;
 
 public class Tank extends CollidableEntity {
 	private int tick=0;
@@ -14,7 +16,7 @@ public class Tank extends CollidableEntity {
 	public int direction =0;
 	public boolean fire = false;
 
-	private static final int speed = 5;
+	private static final int speed = 3;
 	private int angle = 0; // angle 0 = EAST
 	private boolean flashing = false;
 	private int flashCounter = 0;
@@ -23,24 +25,25 @@ public class Tank extends CollidableEntity {
 	public Tank(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.radius = 20;
+		this.z=1;
+		this.radius = 6;
 		this.setImage(new Image("res/playerTank_up.png"));
 	}
 
 	private void forward() {
-		this.y -= speed;
+		this.y+=(this.y<=0)?0:-1*speed;
 	}
 	
 	private void backward() {
-		this.y +=  speed;
+		this.y+=(this.y>=SceneManager.SCENE_HEIGHT-30)?0:speed;
 	}
 	
 	private void turnleft() {
-		this.x -= speed;
+		this.x+=(this.x<=0)?0:-1*speed;
 	}
 	
 	private void turnright() {
-		this.x += speed;
+		this.x+=(this.x>=SceneManager.SCENE_WIDTH-40)?0:speed;
 	}
  
 
@@ -51,6 +54,11 @@ public class Tank extends CollidableEntity {
 	}
 
 	public void update() {
+		for(IRenderable i:RenderableHolder.getInstance().getEntities()) {
+			if(this.collideWith((CollidableEntity)i)&&!(i instanceof Tank)) {
+				this.destroyed=true;
+			}
+		}
 		this.fire = false;
 		if (flashing) {
 			if (flashCounter == 0) {
@@ -69,26 +77,27 @@ public class Tank extends CollidableEntity {
 		} else {
 			this.visible = !InputUtility.getKeyPressed(KeyCode.SHIFT);
 		}
-		if (InputUtility.getKeyPressed(KeyCode.W)) {
-			forward();
-			this.direction=0;
-			this.setImage(new Image("res/playerTank_up.png"));
-		}
-		if (InputUtility.getKeyPressed(KeyCode.S)) {
-			backward();
-			this.direction=1;
-			this.setImage(new Image("res/playerTank_down.png"));
-		}
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
 			turnleft();
 			this.direction=2;
-			this.setImage(new Image("res/playerTank_left.png"));
+			this.setImage(new Image("res/player_left.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.D)) {
 			turnright();
 			this.direction=3;
-			this.setImage(new Image("res/playerTank_right.png"));
+			this.setImage(new Image("res/player_right.png"));
 		}
+		if (InputUtility.getKeyPressed(KeyCode.W)) {
+			forward();
+			this.direction=0;
+			this.setImage(new Image("res/player_front.png"));
+		}
+		if (InputUtility.getKeyPressed(KeyCode.S)) {
+			backward();
+			this.direction=1;
+			this.setImage(new Image("res/player_down.png"));
+		}
+		
 		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
 			if(tick>=lastTick) {
 				tick=lastTick;

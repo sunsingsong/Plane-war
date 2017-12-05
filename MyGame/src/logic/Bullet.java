@@ -6,7 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 
 public class Bullet extends CollidableEntity {
-	 private final int BULLET_SPEED = 3;
+	 private final int BULLET_SPEED = 5;
 	    private final int BOARD_WIDTH = 640;
 	    private final int BOARD_HEIGHT = 380;
 	    private int direction;
@@ -65,8 +65,30 @@ public class Bullet extends CollidableEntity {
 		@Override
 		public void draw(GraphicsContext gc) {
 			// TODO Auto-generated method stub
-			image = new Image("res/sun.png");
-			gc.drawImage(image, this.x, this.y);
+//			image = new Image("res/1.png");
+//			gc.drawImage(image, this.x, this.y);
+			
+			gc.setFill(Color.WHEAT);
+			int w=3;
+			int h=10;
+			switch(this.direction) {
+			case 2:
+				w=10;h=3;
+			case 3:
+				w=10;h=3;
+			}
+			gc.fillRect(this.x, this.y, w, h);
+			
+//			gc.setFill(Color.WHITE);
+//			gc.setLineWidth(10);
+//			gc.beginPath();
+//			gc.moveTo(this.x, this.y);
+//			gc.lineTo(this.x+50, this.y+50);
+//			gc.stroke();
+//			gc.fill();
+			
+			
+			
 			
 			
 		}

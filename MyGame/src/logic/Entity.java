@@ -6,7 +6,6 @@ import javafx.scene.image.Image;
 import sharedObject.IRenderable;
 
 public abstract class Entity implements IRenderable{
-
 	protected int x,y;
 	protected int z;
 	protected boolean visible,destroyed;

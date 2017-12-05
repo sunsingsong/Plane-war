@@ -13,6 +13,7 @@ public class RenderableHolder {
 	private static final RenderableHolder instance = new RenderableHolder();
 	
 	private List<IRenderable> entities;
+	private IRenderable boss;
 	private Comparator<IRenderable> comparator;
 	
 	static {
@@ -39,7 +40,7 @@ public class RenderableHolder {
 	}
 	
 	public void add(IRenderable entity) {
-		System.out.println("add");
+//		System.out.println("add");
 		entities.add(entity);
 		Collections.sort(entities, comparator);
 //		for(IRenderable x: entities){
@@ -59,5 +60,9 @@ public class RenderableHolder {
 
 	public List<IRenderable> getEntities() {
 		return entities;
+	}
+	
+	public IRenderable getBoss() {
+		return this.boss;
 	}
 }
