@@ -4,19 +4,21 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
+import window.SceneManager;
 
 public class Bullet extends CollidableEntity {
 	 private final int BULLET_SPEED = 5;
-	    private final int BOARD_WIDTH = 640;
-	    private final int BOARD_HEIGHT = 380;
 	    private int direction;
-	    private boolean upgrade = false;
+	    private int damage;
+//	    private boolean upgrade = false;
 	    public boolean isEnemy;
 
-	    public Bullet(int x, int y, int direction) {
+	    public Bullet(int x, int y, int direction,boolean isEnemy) {
+	    	this.damage=1;
 	        this.x=x;
 	        this.y=y;
 	        this.direction = direction;
+	        this.isEnemy=isEnemy;
 	       /* if (direction == 0) {
 	            loadImage("image/bullet_up.png");
 	        }
@@ -35,62 +37,71 @@ public class Bullet extends CollidableEntity {
 	    public void update() {
 	        if (direction == 0) {
 	            y -= BULLET_SPEED;
-	        } else if (direction == 1) {
+	        } else if (direction == 1||this.direction==4) {
 	            y += BULLET_SPEED;
 	        } else if (direction == 2) {
 	            x -= BULLET_SPEED;
 	        } else if (direction == 3) {
 	             x+= BULLET_SPEED;
 	        }
-	        if (x > BOARD_WIDTH + 100 + width) {
+	        if (x > SceneManager.SCENE_WIDTH + 100 + width) {
 	        	visible = false;
 	        }
 	        if (x < -width - 100) {
 	        	visible = false;
 	        }
-	        if (y > BOARD_HEIGHT + height + 100) {
+	        if (y > SceneManager.SCENE_HEIGHT + height + 100) {
 	        	visible = false;
 	        }
-	        if (y < -height - 100) {
+	        if (y < height - 100) {
 	        	visible = false;
 	        }
 	    }
 	    public void upgrade() {
-	        this.upgrade = true;
+	    	if(this.damage<4) {
+	    		 this.damage++;
+	    	}
 	    }
 
-	    public boolean getUpgrade() {
-	        return this.upgrade;
-	    }
+//	    public boolean getUpgrade() {
+//	        return this.upgrade;
+//	    }
 		@Override
 		public void draw(GraphicsContext gc) {
 			// TODO Auto-generated method stub
 //			image = new Image("res/1.png");
 //			gc.drawImage(image, this.x, this.y);
+			switch(this.damage) {
+			case 1:
+				gc.setFill(Color.WHEAT);
+				break;
+			case 2:
+				gc.setFill(Color.YELLOW);
+				break;
+			case 3:
+				gc.setFill(Color.ORANGE);
+				break;
+			case 4:
+				gc.setFill(Color.RED);
+				break;
+			default:
+				gc.setFill(Color.WHITE);
+			}
 			
-			gc.setFill(Color.WHEAT);
-			int w=3;
-			int h=10;
+			this.height=18;
+			this.width=6;
 			switch(this.direction) {
 			case 2:
-				w=10;h=3;
+				width=18;height=6;
 			case 3:
-				w=10;h=3;
+				width=18;height=6;
 			}
-			gc.fillRect(this.x, this.y, w, h);
-			
-//			gc.setFill(Color.WHITE);
-//			gc.setLineWidth(10);
-//			gc.beginPath();
-//			gc.moveTo(this.x, this.y);
-//			gc.lineTo(this.x+50, this.y+50);
-//			gc.stroke();
-//			gc.fill();
-			
-			
-			
-			
-			
+			gc.fillRect(this.x, this.y, width, height);
+				
+		}
+		
+		public int getDamage() {
+			return this.damage;
 		}
 	    
 }

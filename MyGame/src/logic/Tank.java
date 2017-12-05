@@ -26,8 +26,8 @@ public class Tank extends CollidableEntity {
 		this.x = x;
 		this.y = y;
 		this.z=1;
-		this.radius = 6;
-		this.setImage(new Image("res/playerTank_up.png"));
+		this.radius = 8;
+		this.setImage(new Image("res/player_front.png"));
 	}
 
 	private void forward() {
@@ -55,8 +55,14 @@ public class Tank extends CollidableEntity {
 
 	public void update() {
 		for(IRenderable i:RenderableHolder.getInstance().getEntities()) {
-			if(this.collideWith((CollidableEntity)i)&&!(i instanceof Tank)) {
-				this.destroyed=true;
+			if(this.collideWith((CollidableEntity)i)){
+				if((i instanceof Bullet)&&(((Bullet)i).isEnemy)){	
+					((Bullet)i).destroyed=true;
+					this.destroyed=true;
+				}
+				if(i instanceof Boss) {
+					this.destroyed=true;	
+				}
 			}
 		}
 		this.fire = false;
