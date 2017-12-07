@@ -27,14 +27,14 @@ public class MainMenu extends Canvas {
 		
 		GraphicsContext gc = this.getGraphicsContext2D();
 		gc.setFill(Color.BLACK);
-		gc.fillRect(0, 0, SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
+		gc.fillRect(0, 0, SceneManager.SCENE_WIDTH+100, SceneManager.SCENE_HEIGHT);
 		gc.setFill(Color.WHITE);
 		//gc.setTextAlign(TextAlignment.CENTER);
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setFont(MENU_FONT);
 		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
 		double font_width = fontLoader.computeStringWidth("This is a filled Text", gc.getFont());
-		gc.fillText("‡æ≈π «Õ√Ï", SceneManager.SCENE_WIDTH /2, SceneManager.SCENE_HEIGHT /2);
+		gc.fillText("‡æ≈π «Õ√Ï", (SceneManager.SCENE_WIDTH) /2, SceneManager.SCENE_HEIGHT /2);
 		
 		this.addKeyEventHandler();
 	}

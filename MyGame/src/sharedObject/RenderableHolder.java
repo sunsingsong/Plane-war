@@ -50,6 +50,10 @@ public class RenderableHolder {
 //			
 //		}
 	}
+	
+	public void remove(IRenderable entity) {
+		entities.remove(entity);
+	}
 
 	public void update() {
 		for (int i = entities.size() - 1; i >= 0; i--) {

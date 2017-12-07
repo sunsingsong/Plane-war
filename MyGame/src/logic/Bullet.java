@@ -46,15 +46,19 @@ public class Bullet extends CollidableEntity {
 	        }
 	        if (x > SceneManager.SCENE_WIDTH + 100 + width) {
 	        	visible = false;
+	        	destroyed=true;
 	        }
 	        if (x < -width - 100) {
 	        	visible = false;
+	        	destroyed=true;
 	        }
 	        if (y > SceneManager.SCENE_HEIGHT + height + 100) {
 	        	visible = false;
+	        	destroyed=true;
 	        }
 	        if (y < height - 100) {
 	        	visible = false;
+	        	destroyed=true;
 	        }
 	    }
 	    public void upgrade() {
@@ -102,6 +106,10 @@ public class Bullet extends CollidableEntity {
 		
 		public int getDamage() {
 			return this.damage;
+		}
+		
+		public void otk() {
+			this.damage=100;
 		}
 	    
 }

@@ -23,11 +23,13 @@ public class Tank extends CollidableEntity {
 	private int flashDurationCounter = 0;
 
 	public Tank(int x, int y) {
+		this.width=40;
+		this.height=30;
 		this.x = x;
 		this.y = y;
 		this.z=1;
 		this.radius = 8;
-		this.setImage(new Image("res/player_front.png"));
+		this.setImage(new Image("file:res/player_front.png"));
 	}
 
 	private void forward() {
@@ -63,6 +65,12 @@ public class Tank extends CollidableEntity {
 				if(i instanceof Boss) {
 					this.destroyed=true;	
 				}
+				if(i instanceof Bomb) {
+					this.destroyed=true;
+				}
+				if(i instanceof Laser) {
+					this.destroyed=true;
+				}
 			}
 		}
 		this.fire = false;
@@ -86,22 +94,22 @@ public class Tank extends CollidableEntity {
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
 			turnleft();
 			this.direction=2;
-			this.setImage(new Image("res/player_left.png"));
+			this.setImage(new Image("file:res/player_left.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.D)) {
 			turnright();
 			this.direction=3;
-			this.setImage(new Image("res/player_right.png"));
+			this.setImage(new Image("file:res/player_right.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.W)) {
 			forward();
 			this.direction=0;
-			this.setImage(new Image("res/player_front.png"));
+			this.setImage(new Image("file:res/player_front.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.S)) {
 			backward();
 			this.direction=1;
-			this.setImage(new Image("res/player_down.png"));
+			this.setImage(new Image("file:res/player_down.png"));
 		}
 		
 		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
@@ -109,8 +117,7 @@ public class Tank extends CollidableEntity {
 				tick=lastTick;
 				this.fire = true;
 				fire();
-				lastTick+=50
-						;
+				lastTick+=50;
 			}
 			//tick++;
 		}
@@ -139,6 +146,7 @@ public class Tank extends CollidableEntity {
 //		gc.fillRect(0, -gunSize, radius * 3 / 2, gunSize * 2);
 //		gc.rotate(-angle);
 //		gc.translate(-x, -y);
+		gc.setGlobalAlpha(1);
 		gc.drawImage(image, x, y);
 	}
 

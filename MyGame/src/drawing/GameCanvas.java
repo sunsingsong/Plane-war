@@ -4,6 +4,8 @@ import input.InputUtility;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Affine;
+import logic.Bomb;
 import logic.Boss;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
@@ -44,8 +46,8 @@ public class GameCanvas extends Canvas {
 			if (entity.isVisible() && !entity.isDestroyed()) {
 				entity.draw(gc);
 			}
+			
 		}
-
 	}
 	
 //	public void phase1() {
