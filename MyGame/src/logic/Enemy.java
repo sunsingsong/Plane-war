@@ -1,5 +1,141 @@
 package logic;
 
-public class Enemy {
+import java.util.Random;
+
+import input.InputUtility;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.ArcType;
+import sharedObject.IRenderable;
+import sharedObject.RenderableHolder;
+import window.SceneManager;
+
+public class Enemy extends CollidableEntity {
+	private int tick=0;
+	private int tick1=0;
+	private int lastTick=0;
+	private int lastTick1=0;
+	public int direction =0;
+	public boolean fire = false;
+
+	private static final int speed = 3;
+	private int angle = 0; // angle 0 = EAST
+	private boolean flashing = false;
+	private int flashCounter = 0;
+	private int flashDurationCounter = 0;
+
+	public Enemy(int x, int y) {
+		this.width=40;
+		this.height=30;
+		this.x = x;
+		this.y = y;
+		this.z=1;
+		this.radius = 8;
+		this.setImage(new Image("res/player_front.png"));
+	}
+
+	private void forward() {
+		this.y+=(this.y<=0)?0:-1*speed;
+	}
+	
+	private void backward() {
+		this.y+=(this.y>=SceneManager.SCENE_HEIGHT-30)?0:speed;
+	}
+	
+	private void turnleft() {
+		this.x+=(this.x<=0)?0:-1*speed;
+	}
+	
+	private void turnright() {
+		this.x+=(this.x>=SceneManager.SCENE_WIDTH-40)?0:speed;
+	}
+ 
+
+	public void hitByMine() {
+		flashing = true;
+		flashCounter = 10;
+		flashDurationCounter = 10;
+	}
+
+	public void update() {
+		for(IRenderable i:RenderableHolder.getInstance().getEntities()) {
+			if(this.collideWith((CollidableEntity)i)){
+				if((i instanceof Bullet)&&!(((Bullet)i).isEnemy)){	
+					((Bullet)i).destroyed=true;
+					this.destroyed=true;
+				}
+			}
+		}
+		this.fire = false;
+		Random rand = new Random();
+		int randDirect = rand.nextInt(4);
+		if(tick1>=lastTick1) {
+			if (randDirect == 0) {
+				forward();
+				this.direction = 0;
+				this.setImage(new Image("res/player_front.png"));
+			} else if (randDirect == 1) {
+				backward();
+				this.direction = 1;
+				this.setImage(new Image("res/player_down.png"));
+			} else if (randDirect == 2) {
+				turnleft();
+				this.direction = 2;
+				this.setImage(new Image("res/player_left.png"));
+			} else if (randDirect == 3) {
+				turnright();
+				this.direction = 3;
+				this.setImage(new Image("res/player_right.png"));
+			}
+			tick1=lastTick1;
+			lastTick1+=100;
+		}
+		else {
+			if(this.direction==0) {
+				forward();
+			}
+			else if(this.direction==1) {
+				backward();
+				if (this.y<=0) {
+					this.direction = 0;
+					this.setImage(new Image("res/player_front.png"));
+				}
+			}
+			else if(this.direction==2) {
+				turnleft();
+				if (this.x<=0) {
+					this.direction = 3;
+					this.setImage(new Image("res/player_right.png"));
+				}
+			}
+			else if(this.direction==3) {
+				turnright();
+			}
+		}
+			if(tick>=lastTick) {
+				tick=lastTick;
+				this.fire = true;
+				lastTick+=50;
+			}
+		tick++;
+		tick1++;
+//		if (InputUtility.isLeftClickTriggered()) {
+//			this.x = InputUtility.mouseX;
+//			this.y = InputUtility.mouseY;
+//		}
+	}
+	
+	public void fire() {
+//		Bullet aBullet = new Bullet(x,y,direction);
+//		RenderableHolder.getInstance().getEntities().add(aBullet);
+	}
+
+	@Override
+	public void draw(GraphicsContext gc) {
+		gc.setGlobalAlpha(1);
+		gc.drawImage(image, x, y);
+	}
 
 }

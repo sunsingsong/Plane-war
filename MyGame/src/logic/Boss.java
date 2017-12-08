@@ -51,7 +51,7 @@ public class Boss extends CollidableEntity {
 		this.x = x;
 		this.y = y;
 		this.z = 2;
-		this.setImage(new Image("file:res/boss1.png"));
+		this.setImage(new Image("res/boss1.png"));
 	}
 
 	public void update() {
@@ -220,7 +220,7 @@ public class Boss extends CollidableEntity {
 						this.hp -= 1;
 						this.flashing = true;
 						this.barrier = true;
-						tick = 0;
+						tick = 1;
 						if(this.hp==4) {
 							this.sp2=true;
 						}

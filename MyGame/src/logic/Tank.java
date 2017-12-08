@@ -29,7 +29,7 @@ public class Tank extends CollidableEntity {
 		this.y = y;
 		this.z=1;
 		this.radius = 8;
-		this.setImage(new Image("file:res/player_front.png"));
+		this.setImage(new Image("res/player_front.png"));
 	}
 
 	private void forward() {
@@ -94,29 +94,28 @@ public class Tank extends CollidableEntity {
 		if (InputUtility.getKeyPressed(KeyCode.A)) {
 			turnleft();
 			this.direction=2;
-			this.setImage(new Image("file:res/player_left.png"));
+			this.setImage(new Image("res/player_left.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.D)) {
 			turnright();
 			this.direction=3;
-			this.setImage(new Image("file:res/player_right.png"));
+			this.setImage(new Image("res/player_right.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.W)) {
 			forward();
 			this.direction=0;
-			this.setImage(new Image("file:res/player_front.png"));
+			this.setImage(new Image("res/player_front.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.S)) {
 			backward();
 			this.direction=1;
-			this.setImage(new Image("file:res/player_down.png"));
+			this.setImage(new Image("res/player_down.png"));
 		}
 		
 		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
 			if(tick>=lastTick) {
 				tick=lastTick;
 				this.fire = true;
-				fire();
 				lastTick+=50;
 			}
 			//tick++;

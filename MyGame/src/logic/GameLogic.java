@@ -14,10 +14,12 @@ import window.SceneManager;
 public class GameLogic {
 	private List<Entity> gameObjectContainer;
 	private List<Entity> graveYard;
+	private List<Enemy> enemys;
 	private GameCanvas canvas;
 	private Tank tank;
 	private Boss boss;
 	private Laser ai;
+	private Enemy enemy;
 	private Bullet aBullet;
 	private int upgrade = 0;
 	private int count = 0;
@@ -29,15 +31,23 @@ public class GameLogic {
 	public GameLogic(GameCanvas canvas) {
 		this.gameObjectContainer = new ArrayList<Entity>();
 		this.graveYard = new ArrayList<Entity>();
+		this.enemys= new ArrayList<Enemy>();
 		this.canvas = canvas;
 		tank = new Tank(380, 300);
 		addNewObject(tank);
-		boss = new Boss(355, 0);
-		addNewObject(boss);
-		ai = new Laser(100,100,5,2);
-		addNewObject(ai);
+//		boss = new Boss(355, 0);
+		addNewAi();
+	//	addNewObject(boss);
+	//	ai = new Laser(100,100,5,2);
+	//	addNewObject(ai);
 	}
-
+	protected void addNewAi() {
+		for(int i=0;i<10;i++) {
+			enemy = new Enemy(200+i*40,0*i*80);
+			this.enemys.add(enemy);
+			addNewObject(enemy);
+		}
+	}
 	protected void addNewObject(Entity entity) {
 		gameObjectContainer.add(entity);
 		RenderableHolder.getInstance().add(entity);
@@ -83,7 +93,19 @@ public class GameLogic {
 			}
 			addNewObject(aBullet);
 		}
-		if (boss.phase1) {
+
+		for (Enemy enemy1 : enemys) {
+			if(enemy1.fire==false)
+				continue;
+			Random rand = new Random();
+			int randDirect = rand.nextInt(2);
+			if (randDirect == 1) {
+				aBullet = new Bullet(enemy1.getX() + 20, enemy1.getY() + 15, enemy1.direction, true);
+				addNewObject(aBullet);
+			}
+		}
+		
+		/*if (boss.phase1) {
 			if (boss.b1) {
 				ai.playerPos(tank.x+tank.width/2, tank.y+tank.height/2);
 				Bullet aBullet = new Bullet(boss.getX() + boss.width, boss.getY() + boss.height, boss.direction, true);
@@ -133,7 +155,7 @@ public class GameLogic {
 				Bomb bomb = new Bomb(boss.getX(), boss.getY(), boss.getHp());
 				addNewObject(bomb);
 			}
-		}
+		}*/
 		count++;
 		canvas.paintComponent();
 
