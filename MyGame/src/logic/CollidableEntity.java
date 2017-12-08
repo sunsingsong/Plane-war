@@ -24,6 +24,9 @@ public abstract class CollidableEntity extends Entity {
 			if(other instanceof Laser) {
 				return Math.hypot(this.x + (20) - (other.x), this.y + (15) - (other.y)) <= this.radius;
 			}
+			if(other instanceof Enemy) {
+				return Math.hypot(this.x + (20) - other.x, this.y + (15) - other.y) <= this.radius + other.radius;
+			}
 			//System.out.println(result);
 			return result;
 		}
@@ -36,7 +39,14 @@ public abstract class CollidableEntity extends Entity {
 			}
 			return result;
 		}
-		
+		if(this instanceof Enemy) {
+			if (other instanceof Bullet) {
+				for (int i = 0; i < 6; i++) {
+					result = result&& Math.hypot(this.x + (50) - (other.x + i), this.y + (50) - (other.y + i)) <= this.radius;
+				}
+			}
+			return result;
+		}
 		if(this instanceof Barrier) {
 			if (other instanceof Bullet) {
 //				System.out.print(other.x+other.width>=this.x);

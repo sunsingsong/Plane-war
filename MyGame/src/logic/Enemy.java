@@ -20,7 +20,7 @@ public class Enemy extends CollidableEntity {
 	public int direction =0;
 	public boolean fire = false;
 
-	private static final int speed = 3;
+	private static final int speed = 2;
 	private int angle = 0; // angle 0 = EAST
 	private boolean flashing = false;
 	private int flashCounter = 0;
@@ -33,7 +33,7 @@ public class Enemy extends CollidableEntity {
 		this.y = y;
 		this.z=1;
 		this.radius = 8;
-		this.setImage(new Image("res/player_front.png"));
+		this.setImage(new Image("res/enemy1.png"));
 	}
 
 	private void forward() {
@@ -69,25 +69,39 @@ public class Enemy extends CollidableEntity {
 			}
 		}
 		this.fire = false;
+		setPosition();
+		
+			if(tick>=lastTick) {
+				tick=lastTick;
+				this.fire = true;
+				lastTick+=50;
+			}
+		tick++;
+//		if (InputUtility.isLeftClickTriggered()) {
+//			this.x = InputUtility.mouseX;
+//			this.y = InputUtility.mouseY;
+//		}
+	}
+	public void setPosition() {
 		Random rand = new Random();
 		int randDirect = rand.nextInt(4);
 		if(tick1>=lastTick1) {
 			if (randDirect == 0) {
 				forward();
 				this.direction = 0;
-				this.setImage(new Image("res/player_front.png"));
+				
 			} else if (randDirect == 1) {
 				backward();
 				this.direction = 1;
-				this.setImage(new Image("res/player_down.png"));
+			
 			} else if (randDirect == 2) {
 				turnleft();
 				this.direction = 2;
-				this.setImage(new Image("res/player_left.png"));
+	
 			} else if (randDirect == 3) {
 				turnright();
 				this.direction = 3;
-				this.setImage(new Image("res/player_right.png"));
+			
 			}
 			tick1=lastTick1;
 			lastTick1+=100;
@@ -100,33 +114,22 @@ public class Enemy extends CollidableEntity {
 				backward();
 				if (this.y<=0) {
 					this.direction = 0;
-					this.setImage(new Image("res/player_front.png"));
+					
 				}
 			}
 			else if(this.direction==2) {
 				turnleft();
 				if (this.x<=0) {
 					this.direction = 3;
-					this.setImage(new Image("res/player_right.png"));
+					
 				}
 			}
 			else if(this.direction==3) {
 				turnright();
 			}
 		}
-			if(tick>=lastTick) {
-				tick=lastTick;
-				this.fire = true;
-				lastTick+=50;
-			}
-		tick++;
 		tick1++;
-//		if (InputUtility.isLeftClickTriggered()) {
-//			this.x = InputUtility.mouseX;
-//			this.y = InputUtility.mouseY;
-//		}
 	}
-	
 	public void fire() {
 //		Bullet aBullet = new Bullet(x,y,direction);
 //		RenderableHolder.getInstance().getEntities().add(aBullet);

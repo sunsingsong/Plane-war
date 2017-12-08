@@ -3,6 +3,7 @@ package logic;
 
 
 import javafx.scene.image.Image;
+import javafx.geometry.Rectangle2D;
 import sharedObject.IRenderable;
 
 public abstract class Entity implements IRenderable{
@@ -23,7 +24,15 @@ public abstract class Entity implements IRenderable{
 //        width = image.getWidth(null);
 //        height = image.getHeight(null);
 //    }
-	
+	/*public Rectangle2D getBoundary()
+    {
+        return new Rectangle2D(x,y,width,height);
+    }
+
+    public boolean intersects(Entity e)
+    {
+        return e.getBoundary().intersects( this.getBoundary() );
+    }*/
 	public boolean isDestroyed(){
 		return destroyed;
 	}

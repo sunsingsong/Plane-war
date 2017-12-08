@@ -27,7 +27,8 @@ public class GameLogic {
 	private int count1;
 	private int count2;
 	boolean otk = false;
-
+	private int countEnemy=0;
+	private int killEnemy=0;
 	public GameLogic(GameCanvas canvas) {
 		this.gameObjectContainer = new ArrayList<Entity>();
 		this.graveYard = new ArrayList<Entity>();
@@ -35,24 +36,22 @@ public class GameLogic {
 		this.canvas = canvas;
 		tank = new Tank(380, 300);
 		addNewObject(tank);
-//		boss = new Boss(355, 0);
 		addNewAi();
-	//	addNewObject(boss);
-	//	ai = new Laser(100,100,5,2);
-	//	addNewObject(ai);
+		//addNewObject(boss);
+		ai = new Laser(100,100,5,2);
+		addNewObject(ai);
 	}
 	protected void addNewAi() {
-		for(int i=0;i<10;i++) {
+		for(int i=0;i<5;i++) {
 			enemy = new Enemy(200+i*40,0*i*80);
-			this.enemys.add(enemy);
 			addNewObject(enemy);
+			enemys.add(enemy);
 		}
 	}
 	protected void addNewObject(Entity entity) {
 		gameObjectContainer.add(entity);
 		RenderableHolder.getInstance().add(entity);
 	}
-
 	protected void removeObject(Entity entity) {
 		gameObjectContainer.remove(entity);
 		RenderableHolder.getInstance().remove(entity);
@@ -60,21 +59,19 @@ public class GameLogic {
 
 	public void logicUpdate() {
 		RenderableHolder.getInstance().update();
-		for (Entity e : gameObjectContainer) {
-			if (e.destroyed != true) {
-				e.update();
-			} else {
-				this.graveYard.add(e);
-				// System.out.println(e);
-			}
-		}
+		checkEntityDead();
 
 		// System.out.println(gameObjectContainer.size());
 		for (Entity e : graveYard) {
 			removeObject(e);
 		}
 		graveYard.clear();
-
+		if(killEnemy==3) {
+			boss = new Boss(355, 0);
+			addNewObject(boss);
+			phaseBoss();
+		}
+			
 		if (InputUtility.getKeyPressed(KeyCode.U) && count - lastCount > 50) {
 			System.out.println("x");
 			this.upgrade++;
@@ -93,7 +90,11 @@ public class GameLogic {
 			}
 			addNewObject(aBullet);
 		}
+		enemyFire();
+		canvas.paintComponent();
 
+	}
+	private void enemyFire() {
 		for (Enemy enemy1 : enemys) {
 			if(enemy1.fire==false)
 				continue;
@@ -104,8 +105,9 @@ public class GameLogic {
 				addNewObject(aBullet);
 			}
 		}
-		
-		/*if (boss.phase1) {
+	}
+	private void phaseBoss() {
+		if (boss.phase1) {
 			if (boss.b1) {
 				ai.playerPos(tank.x+tank.width/2, tank.y+tank.height/2);
 				Bullet aBullet = new Bullet(boss.getX() + boss.width, boss.getY() + boss.height, boss.direction, true);
@@ -155,9 +157,21 @@ public class GameLogic {
 				Bomb bomb = new Bomb(boss.getX(), boss.getY(), boss.getHp());
 				addNewObject(bomb);
 			}
-		}*/
+		}
 		count++;
-		canvas.paintComponent();
-
 	}
+	private void checkEntityDead() {
+		for (Entity e : gameObjectContainer) {
+			if (e.destroyed != true) {
+				e.update();
+			} else {
+				if(e instanceof Enemy)
+					killEnemy++;
+				this.graveYard.add(e);
+				// System.out.println(e);
+			}
+		}
+		this.graveYard.clear();
+	}
+	
 }

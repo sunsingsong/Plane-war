@@ -15,8 +15,8 @@ public class Tank extends CollidableEntity {
 	private int lastTick=0;
 	public int direction =0;
 	public boolean fire = false;
-
-	private static final int speed = 3;
+	
+	private static final int speed = 4;
 	private int angle = 0; // angle 0 = EAST
 	private boolean flashing = false;
 	private int flashCounter = 0;
@@ -71,6 +71,9 @@ public class Tank extends CollidableEntity {
 				if(i instanceof Laser) {
 					this.destroyed=true;
 				}
+				if(i instanceof Enemy) {
+					this.destroyed=true;
+				}
 			}
 		}
 		this.fire = false;
@@ -91,22 +94,22 @@ public class Tank extends CollidableEntity {
 		} else {
 			this.visible = !InputUtility.getKeyPressed(KeyCode.SHIFT);
 		}
-		if (InputUtility.getKeyPressed(KeyCode.A)) {
+		if (InputUtility.getKeyPressed(KeyCode.LEFT)) {
 			turnleft();
 			this.direction=2;
 			this.setImage(new Image("res/player_left.png"));
 		}
-		if (InputUtility.getKeyPressed(KeyCode.D)) {
+		if (InputUtility.getKeyPressed(KeyCode.RIGHT)) {
 			turnright();
 			this.direction=3;
 			this.setImage(new Image("res/player_right.png"));
 		}
-		if (InputUtility.getKeyPressed(KeyCode.W)) {
+		if (InputUtility.getKeyPressed(KeyCode.UP)) {
 			forward();
 			this.direction=0;
 			this.setImage(new Image("res/player_front.png"));
 		}
-		if (InputUtility.getKeyPressed(KeyCode.S)) {
+		if (InputUtility.getKeyPressed(KeyCode.DOWN)) {
 			backward();
 			this.direction=1;
 			this.setImage(new Image("res/player_down.png"));
