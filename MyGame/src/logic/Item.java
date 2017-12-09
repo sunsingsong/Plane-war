@@ -22,7 +22,7 @@ public class Item extends CollidableEntity{
 		this.itemType=rand.nextInt(2);
 	}
 	public void update() {
-		x++;
+		
 	}
 	@Override
 	public void draw(GraphicsContext gc) {
