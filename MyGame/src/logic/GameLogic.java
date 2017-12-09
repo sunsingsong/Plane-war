@@ -20,17 +20,23 @@ public class GameLogic {
 	private Boss boss;
 	private Laser ai;
 	private Enemy enemy;
+	private Item item;
 	private Bullet aBullet;
 	private int upgrade = 0;
 	private int count = 0;
 	private int lastCount = 0;
 	private int count1;
 	private int count2;
+	private int tickSpawn=0;
+	private int lastTickSpawn=480;
 	boolean otk = false;
 	boolean start3 = true;
 	private int countEnemy = 0;
-	private int killEnemy = 0;
+	public static int killEnemy = 0;
+	public int killEnemyForItem=0;
 	private boolean bossOnce = true;
+	private boolean bossDead=false;
+	private int bossCount=1;
 
 	public GameLogic(GameCanvas canvas) {
 		this.gameObjectContainer = new ArrayList<Entity>();
@@ -39,8 +45,6 @@ public class GameLogic {
 		this.canvas = canvas;
 		tank = new Tank(380, 300);
 		addNewObject(tank);
-		// boss = new Boss(355, 0);
-		// addNewObject(boss);
 		ai = new Laser(100, 100, 5, 2);
 		addNewObject(ai);
 		addNewAi();
@@ -48,10 +52,27 @@ public class GameLogic {
 	}
 
 	protected void addNewAi() {
-		for (int i = 0; i < 5; i++) {
-			enemy = new Enemy(200 + i * 40, 0 * i * 80);
-			addNewObject(enemy);
-			enemys.add(enemy);
+		if(this.tickSpawn>=this.lastTickSpawn) {
+			for (int i = 0; i < 4; i++) {
+				if(this.countEnemy>4) break;
+				enemy = new Enemy(200 + i * 40, 0 * i * 80);
+				if(this.bossDead) {
+					enemy.levelEnemy=this.bossCount;
+					enemy.setImage(new Image("res/bot"+this.bossCount+".png"));
+				}
+				addNewObject(enemy);
+				enemys.add(enemy);
+				this.countEnemy++;
+			}
+			this.lastTickSpawn+=480;
+		}
+		else if(this.tickSpawn==0) {
+			for (int i = 0; i < 4; i++) {
+				enemy = new Enemy(200 + i * 40, 0 * i * 80);
+				addNewObject(enemy);
+				enemys.add(enemy);
+				this.countEnemy++;
+			}
 		}
 	}
 
@@ -66,33 +87,32 @@ public class GameLogic {
 	}
 
 	public void logicUpdate() {
+		tickSpawn++;
+		if(this.countEnemy<4)
+			addNewAi();
 		RenderableHolder.getInstance().update();
 		checkEntityDead();
-		// for (Entity e : gameObjectContainer) {
-		// System.out.println(gameObjectContainer.size());
-		// if (e.destroyed != true) {
-		// e.update();
-		// } else {
-		// this.graveYard.add(e);
-		// // System.out.println(e);
-		// }
-		// }
-
-		for (Entity e : graveYard) {
-			removeObject(e);
-			if (this.enemys.contains(e)) {
-				this.enemys.remove(e);
-			}
-
+		if(this.killEnemyForItem%2==0&&this.killEnemyForItem!=0) {
+			item = new Item();
+			addNewObject(item);
+			this.killEnemyForItem=0;
 		}
-		graveYard.clear();
-
-		if (killEnemy == 3) {
+			
+		if (killEnemy == 4 &&this.killEnemy!=0) {
 			if(bossOnce) {
 				boss = new Boss(355, 0);
 				addNewObject(boss);
 				bossOnce=false;
+				this.bossDead=false;
 			}
+			if(boss.destroyed) {
+				this.bossDead=true;
+				this.countEnemy=0;
+				this.bossOnce=true;
+				this.killEnemy=0;
+				this.bossCount++;
+			}
+			
 		}
 		
 		if(!bossOnce)phaseBoss();
@@ -146,12 +166,20 @@ public class GameLogic {
 			} else {
 				if (e instanceof Enemy) {
 					killEnemy++;
+					this.killEnemyForItem++;
 				}
 				this.graveYard.add(e);
 				// System.out.println(e);
 			}
 		}
-		// this.graveYard.clear();
+		for (Entity e : graveYard) {
+			removeObject(e);
+			if (this.enemys.contains(e)) {
+				this.enemys.remove(e);
+			}
+
+		}
+		graveYard.clear();
 	}
 
 	private void phaseBoss() {
@@ -213,10 +241,10 @@ public class GameLogic {
 		if (boss.phase3) {
 			if (start3) {
 				
-				Fang fang1 = new Fang(boss.x + (boss.width / 2) - (16), boss.y - 40, 1, new Image("fang1.png"), boss);
+				Fang fang1 = new Fang(boss.x + (boss.width / 2) - (16), boss.y - 40, 1, new Image("res/fang1.png"), boss);
 				addNewObject(fang1);
 
-				Fang fang2 = new Fang(boss.x - (32), boss.y, 2, new Image("fang2.png"), boss);
+				Fang fang2 = new Fang(boss.x - (32), boss.y, 2, new Image("res/fang2.png"), boss);
 				addNewObject(fang2);
 
 				Fang fang3 = new Fang(boss.x - (32), boss.y + (boss.height / 2) + (16), 3, new Image("fang3.png"),
@@ -227,11 +255,11 @@ public class GameLogic {
 						new Image("fang4.png"), boss);
 				addNewObject(fang4);
 
-				Fang fang5 = new Fang(boss.x + (boss.width), boss.y, 5, new Image("fang5.png"), boss);
+				Fang fang5 = new Fang(boss.x + (boss.width), boss.y, 5, new Image("res/fang5.png"), boss);
 				addNewObject(fang5);
 
 				Fang fang6 = new Fang(boss.x + (boss.width), boss.y + (boss.height / 2) + (16), 6,
-						new Image("fang6.png"), boss);
+						new Image("res/fang6.png"), boss);
 				addNewObject(fang6);
 				
 				boss.setFang(fang1, fang2, fang3, fang4, fang5, fang6);

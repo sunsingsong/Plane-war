@@ -13,7 +13,7 @@ public class Boss extends CollidableEntity {
 	private static final Font TEXT_FONT = new Font("Monospace", 80);
 	private static final Font SCORE_TIME_FONT = new Font("Monospace", 30);
 	public int direction = 4;
-	private int hp = 15;
+	private int hp = 3;
 	private int speed = 3;
 	private int tick = 1;
 	private int lastTick = 0;
@@ -72,10 +72,10 @@ public class Boss extends CollidableEntity {
 			startPhase1();
 		}
 		if (sp2) {
-			startPhase2();
+			//startPhase2();
 		}
-		if (sp3)  {
-			startPhase3();
+		if (sp3) {
+		//	startPhase3();
 		}
 		if (phase1) {
 			phase1();
@@ -123,7 +123,7 @@ public class Boss extends CollidableEntity {
 				gc.setFill(Color.WHITE);
 				gc.fillRect(0, 0,SceneManager.SCENE_WIDTH , SceneManager.SCENE_HEIGHT);
 			}else {
-				this.setImage(new Image("file:res/boss5.png"));
+				this.setImage(new Image("res/boss5.png"));
 				if(i>0) {
 					i-=0.1;
 					gc.setGlobalAlpha(i);
@@ -171,10 +171,10 @@ public class Boss extends CollidableEntity {
 			this.speed = 5;
 		}
 		if (hp <= 6) {
-			this.speed = 8;
+			this.speed = 5;
 		}
 		if (hp <= 3) {
-			this.speed = 9;
+			this.speed = 5;
 		}
 		if (hp <= 0) {
 			// this.visible=false;
@@ -183,6 +183,7 @@ public class Boss extends CollidableEntity {
 			this.hp = 6;
 			this.tick = 1;
 			this.sp2 = true;
+			this.destroyed=true;
 			return;
 		}
 
@@ -292,21 +293,21 @@ public class Boss extends CollidableEntity {
 			}
 			if(this.hp>=3&&this.hp<=6&&tick%50==0) {
 				if(bossImage==1) {
-					this.setImage(new Image("boss"+this.bossImage+".png"));
+					this.setImage(new Image("res/boss"+this.bossImage+".png"));
 					this.lastBossImage=bossImage;
 					bossImage++;
 				}else if(bossImage==2) {
 					if(this.lastBossImage==1) {
-						this.setImage(new Image("boss"+this.bossImage+".png"));
+						this.setImage(new Image("res/boss"+this.bossImage+".png"));
 						this.lastBossImage=bossImage;
 						bossImage++;
 					}else {
-						this.setImage(new Image("boss"+this.bossImage+".png"));
+						this.setImage(new Image("res/boss"+this.bossImage+".png"));
 						this.lastBossImage=bossImage;
 						bossImage--;
 					}
 				}else if(bossImage==3) {
-					this.setImage(new Image("boss"+this.bossImage+".png"));
+					this.setImage(new Image("res/boss"+this.bossImage+".png"));
 					this.lastBossImage=bossImage;
 					bossImage--;
 				}
@@ -316,7 +317,7 @@ public class Boss extends CollidableEntity {
 				//tick = 1;
 			}
 			if(!b4 && this.hp >= 1 && this.hp <= 2 && tick % division == 0 ) {
-				this.setImage(new Image("boss4.png"));
+				this.setImage(new Image("res/boss4.png"));
 				b2=true;
 				b3=true;
 				b4=true;

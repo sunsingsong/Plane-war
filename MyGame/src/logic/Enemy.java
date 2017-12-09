@@ -19,7 +19,8 @@ public class Enemy extends CollidableEntity {
 	private int lastTick1 = 0;
 	public int direction = 0;
 	public boolean fire = false;
-
+	public int levelEnemy = 1;
+	public  boolean changeLevel=true;
 	private static final int speed = 3;
 	private int angle = 0; // angle 0 = EAST
 	private boolean flashing = false;
@@ -33,7 +34,7 @@ public class Enemy extends CollidableEntity {
 		this.y = y;
 		this.z = 1;
 		this.radius = 32;
-		this.setImage(new Image("bot1.png"));
+		this.setImage(new Image("res/bot1.png"));
 	}
 
 	private void forward() {
@@ -59,14 +60,8 @@ public class Enemy extends CollidableEntity {
 	}
 
 	public void update() {
-		for (IRenderable i : RenderableHolder.getInstance().getEntities()) {
-			if (this.collideWith((CollidableEntity) i)) {
-				if ((i instanceof Bullet) && !(((Bullet) i).isEnemy)) {
-					((Bullet) i).destroyed = true;
-					this.destroyed = true;
-				}
-			}
-		}
+		//checkLevelEnemy();
+		checkEnemyDead();
 		this.fire = false;
 		setPosition();
 
@@ -77,7 +72,28 @@ public class Enemy extends CollidableEntity {
 		}
 		tick++;
 	}
-
+	public void checkEnemyDead() {
+		for (IRenderable i : RenderableHolder.getInstance().getEntities()) {
+			if (this.collideWith((CollidableEntity) i)) {
+				if ((i instanceof Bullet) && !(((Bullet) i).isEnemy)) {
+					if(levelEnemy==2) {
+						((Bullet) i).destroyed = true;
+						this.setImage(new Image("res/bot1.png"));
+						levelEnemy=1;
+					}
+					else if(levelEnemy==3) {
+						((Bullet) i).destroyed = true;
+						this.setImage(new Image("res/bot2.png"));
+						levelEnemy=2;
+					}
+					else {
+						((Bullet) i).destroyed = true;
+						this.destroyed = true;
+					}
+				}
+			}
+		}
+	}
 	public void setPosition() {
 		Random rand = new Random();
 		int randDirect = rand.nextInt(4);
@@ -104,6 +120,8 @@ public class Enemy extends CollidableEntity {
 		} else {
 			if (this.direction == 0) {
 				forward();
+				if(this.y>=SceneManager.SCENE_HEIGHT-this.height)
+					this.direction=1;
 			} else if (this.direction == 1) {
 				backward();
 				if (this.y <= 0) {
@@ -113,11 +131,14 @@ public class Enemy extends CollidableEntity {
 			} else if (this.direction == 2) {
 				turnleft();
 				if (this.x <= 0) {
+					
 					this.direction = 3;
 
 				}
 			} else if (this.direction == 3) {
 				turnright();
+				if(this.x>=SceneManager.SCENE_WIDTH-this.width)
+					this.direction=2;
 			}
 		}
 		tick1++;
@@ -127,7 +148,6 @@ public class Enemy extends CollidableEntity {
 	// Bullet aBullet = new Bullet(x,y,direction);
 	// RenderableHolder.getInstance().getEntities().add(aBullet);
 	// }
-
 	@Override
 	public void draw(GraphicsContext gc) {
 		gc.setGlobalAlpha(1);

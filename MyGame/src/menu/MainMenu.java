@@ -34,7 +34,7 @@ public class MainMenu extends Canvas {
 		gc.setFont(MENU_FONT);
 		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
 		double font_width = fontLoader.computeStringWidth("This is a filled Text", gc.getFont());
-		gc.fillText("‡æ≈π «Õ√Ï", (SceneManager.SCENE_WIDTH) /2, SceneManager.SCENE_HEIGHT /2);
+		gc.fillText("PLANE WAR", (SceneManager.SCENE_WIDTH) /2, SceneManager.SCENE_HEIGHT /2);
 		
 		this.addKeyEventHandler();
 	}
