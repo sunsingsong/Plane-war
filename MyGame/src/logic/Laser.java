@@ -18,6 +18,13 @@ public class Laser extends CollidableEntity {
 	private int speed=5;
 	private int playerX;
 	private int playerY;
+	private double xPlus;
+	private double yPlus;
+	private boolean l1;
+	private double dx;
+	private double dy;
+	private int no;
+	
 
 	public Laser(int x, int y, int line, int direction) {
 		this.direction = direction;
@@ -34,10 +41,30 @@ public class Laser extends CollidableEntity {
 			l = new Laser(x, y, 4, direction);
 		}
 	}
+	
+	public Laser(int x,int y,int line,int direction,int px,int py,int no) {
+		this.direction = direction;
+		this.dx = x;
+		this.dy = y;
+		this.width = 5;
+		this.height = 10;
+		this.line = line;
+		this.playerX=px;
+		this.playerY=py;
+		this.speed=3;
+		this.xPlus=((this.playerX-this.dx*1.0)/(50.0));
+		this.yPlus=((this.playerY-this.dy*1.0)/(50.0));
+		this.no=no;
+	}
 
 	public void update() {
 		if (this.x > SceneManager.SCENE_WIDTH || this.y > SceneManager.SCENE_HEIGHT || x < 0 || y < 0) {
 			this.destroyed = true;
+		}
+		if(line==6) {
+			this.dx+=xPlus;
+			this.dy+=yPlus;
+			//System.out.println(xPlus+"   "+yPlus);
 		}
 		if(line==5) {
 			int xx = new Random().nextInt(5);
@@ -124,6 +151,16 @@ public class Laser extends CollidableEntity {
 		gc.setGlobalAlpha(1);
 		if(this.x>=SceneManager.SCENE_WIDTH) {
 			this.visible=false;
+		}
+		if(line==6) {
+			if(this.direction==10) {
+				if(this.no==1) gc.setFill(Color.PURPLE);
+				if(this.no==4) gc.setFill(Color.GREEN);
+				gc.fillRect(this.dx, this.dy, width, height);
+			}
+			if(this.direction==11) {
+				gc.fillRect(this.dx, this.dy, height, width);
+			}
 		}
 		if (line==2||line==4) {
 			switch (this.direction) {

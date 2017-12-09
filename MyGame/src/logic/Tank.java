@@ -58,22 +58,22 @@ public class Tank extends CollidableEntity {
 	public void update() {
 		for(IRenderable i:RenderableHolder.getInstance().getEntities()) {
 			if(this.collideWith((CollidableEntity)i)){
-//				if((i instanceof Bullet)&&(((Bullet)i).isEnemy)){	
-//					((Bullet)i).destroyed=true;
-//					this.destroyed=true;
-//				}
-//				if(i instanceof Boss) {
-//					this.destroyed=true;	
-//				}
-//				if(i instanceof Bomb) {
-//					this.destroyed=true;
-//				}
-//				if(i instanceof Laser) {
-//					this.destroyed=true;
-//				}
-//				if(i instanceof Enemy) {
-//					this.destroyed=true;
-//				}
+				if((i instanceof Bullet)&&(((Bullet)i).isEnemy)){	
+					((Bullet)i).destroyed=true;
+					this.destroyed=true;
+				}
+				if(i instanceof Boss) {
+					this.destroyed=true;	
+				}
+				if(i instanceof Bomb) {
+					this.destroyed=true;
+				}
+				if(i instanceof Laser) {
+					this.destroyed=true;
+				}
+				if(i instanceof Enemy) {
+					this.destroyed=true;
+				}
 			}
 		}
 		this.fire = false;

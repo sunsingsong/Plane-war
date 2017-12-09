@@ -93,8 +93,9 @@ public class GameLogic {
 				addNewObject(boss);
 				bossOnce=false;
 			}
-			phaseBoss();
 		}
+		
+		if(!bossOnce)phaseBoss();
 
 		if (InputUtility.getKeyPressed(KeyCode.U) && count - lastCount > 50) {
 			System.out.println("x");
@@ -211,7 +212,7 @@ public class GameLogic {
 		}
 		if (boss.phase3) {
 			if (start3) {
-
+				
 				Fang fang1 = new Fang(boss.x + (boss.width / 2) - (16), boss.y - 40, 1, new Image("fang1.png"), boss);
 				addNewObject(fang1);
 
@@ -232,9 +233,21 @@ public class GameLogic {
 				Fang fang6 = new Fang(boss.x + (boss.width), boss.y + (boss.height / 2) + (16), 6,
 						new Image("fang6.png"), boss);
 				addNewObject(fang6);
+				
+				boss.setFang(fang1, fang2, fang3, fang4, fang5, fang6);
 
 				start3 = false;
 			}
+			
+			if(boss.b5) {
+				Laser l1 = new Laser(boss.fang1.x+20, boss.fang1.y+20, 6, 10, tank.x+20, tank.y+15,1);
+				addNewObject(l1);
+				
+				Laser l4 = new Laser(boss.fang4.x+20, boss.fang4.y+20, 6, 10, tank.x+20, tank.y+15,4);
+				addNewObject(l4);
+				
+			}
+			
 			if (boss.barrier) {
 				Barrier barrier = new Barrier(boss);
 				addNewObject(barrier);

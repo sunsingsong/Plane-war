@@ -45,6 +45,16 @@ public class Boss extends CollidableEntity {
 	boolean flashing = false;
 	int flashCounter = 10;
 	int flashDurationCounter = 10;
+	
+	Fang fang1;
+	Fang fang2;
+	Fang fang3;
+	Fang fang4;
+	Fang fang5;
+	Fang fang6;
+	
+	boolean fangSet1=false;
+	boolean fangSet4=false;
 
 	public Boss(int x, int y) {
 		this.sp1  = true;
@@ -103,7 +113,7 @@ public class Boss extends CollidableEntity {
 			
 		}
 		if(sp3) {
-			System.out.println("asd");
+			//System.out.println("asd");
 			gc.setGlobalAlpha(1.0);
 			gc.drawImage(this.image, this.x, this.y);
 			if(!vab) {
@@ -366,10 +376,27 @@ public class Boss extends CollidableEntity {
 	}
 	
 	public void phase3() {
+		b5=false;
 		flashState();
 		if (tick % 500 == 0) {
 			breakBarrier();
 			//tick = 1;
+		}
+		if(fangSet1) {
+			if(fang1.setup) {
+				b5=true;
+				fangSet1=false;
+			}
+		}
+		if(fangSet4) {
+			if(fang4.setup) {
+				b5=true;
+				fangSet4=false;
+			}
+		}
+		if (!fangSet1&&!fangSet4&&tick % ((10 - this.speed) * 6) == 0) {
+			b5 = true;
+			// fire(this.direction);
 		}
 		tick++;
 		
@@ -396,6 +423,17 @@ public class Boss extends CollidableEntity {
 				tick=1;
 			}
 		}
+	}
+	
+	public void setFang(Fang fang1,Fang fang2,Fang fang3,Fang fang4,Fang fang5,Fang fang6) {
+		this.fang1=fang1;
+		this.fang2=fang2;
+		this.fang3=fang3;
+		this.fang4=fang4;
+		this.fang5=fang5;
+		this.fang6=fang6;
+		this.fangSet1=true;
+		this.fangSet4=true;
 	}
 
 }
