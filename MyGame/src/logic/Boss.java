@@ -15,7 +15,7 @@ public class Boss extends CollidableEntity {
 	public int direction = 4;
 	private int hp = 15;
 	private int speed = 3;
-	private int tick = 0;
+	private int tick = 1;
 	private int lastTick = 0;
 	private int playerX;
 	private int playerY;
@@ -24,13 +24,16 @@ public class Boss extends CollidableEntity {
 	private int division=10;
 	private int bossImage=1;
 	private int lastBossImage;
+	private double i=0;
+	private boolean vab=false;
 
-	boolean barrier = true;
+    boolean barrier = true;
 	boolean spawn = true;
 	boolean b1;
 	boolean b2;
 	boolean b3;
 	boolean b4;
+	boolean b5;
 
 	boolean phase1 = false;
 	boolean sp1;
@@ -44,14 +47,14 @@ public class Boss extends CollidableEntity {
 	int flashDurationCounter = 10;
 
 	public Boss(int x, int y) {
-		this.sp1 = true;
+		this.sp1  = true;
 		this.radius = 26;
 		this.width = 96;
 		this.height = 96;
 		this.x = x;
 		this.y = y;
 		this.z = 2;
-		this.setImage(new Image("res/boss1.png"));
+		this.setImage(new Image("boss1.png"));
 	}
 
 	public void update() {
@@ -61,12 +64,18 @@ public class Boss extends CollidableEntity {
 		if (sp2) {
 			startPhase2();
 		}
+		if (sp3)  {
+			startPhase3();
+		}
 		if (phase1) {
 			phase1();
 		}
 
 		if (phase2) {
 			phase2();
+		}
+		if (phase3) {
+			phase3();
 		}
 	}
 
@@ -78,6 +87,9 @@ public class Boss extends CollidableEntity {
 			gc.setFont(SCORE_TIME_FONT);
 			gc.fillText(""+this.hp, mX, mY);
 			gc.setGlobalAlpha(1.0);
+//			gc.setFill(Color.AQUA);
+//			gc.fillRect(this.x, this.y, 10, 10);
+//			gc.drawImage(new Image("file:res/bot1.png"), this.x, this.y);
 			gc.drawImage(this.image, this.x, this.y);
 		}
 		if(phase2) {
@@ -86,10 +98,41 @@ public class Boss extends CollidableEntity {
 			gc.fillRect(SceneManager.SCENE_WIDTH-170, 10, 150*(this.hp/6.0), 20);
 			gc.setFill(Color.RED);
 			gc.fillRect(SceneManager.SCENE_WIDTH-170+(150*(this.hp/6.0)), 10, 150*(1-this.hp/6.0), 20);
+			gc.setGlobalAlpha(1.0);
+			gc.drawImage(this.image, this.x, this.y);
 			
 		}
-		gc.setGlobalAlpha(1.0);
-		gc.drawImage(this.image, this.x, this.y);
+		if(sp3) {
+			System.out.println("asd");
+			gc.setGlobalAlpha(1.0);
+			gc.drawImage(this.image, this.x, this.y);
+			if(!vab) {
+				gc.setGlobalAlpha(i);
+				i+=0.1;
+				if(i>=1.0)vab=true;
+				gc.setFill(Color.WHITE);
+				gc.fillRect(0, 0,SceneManager.SCENE_WIDTH , SceneManager.SCENE_HEIGHT);
+			}else {
+				this.setImage(new Image("file:res/boss5.png"));
+				if(i>0) {
+					i-=0.1;
+					gc.setGlobalAlpha(i);
+					gc.setFill(Color.WHITE);
+					gc.fillRect(0, 0,SceneManager.SCENE_WIDTH , SceneManager.SCENE_HEIGHT);
+				}
+//				if(i<=0) {
+//					sp3=false;
+//					//System.out.println("asd");
+//				}
+			}
+//			gc.setFill(Color.WHITE);
+//			gc.fillRect(0, 0,SceneManager.SCENE_WIDTH , SceneManager.SCENE_HEIGHT);
+		}
+		if(!phase1&&!phase2&&!sp3) {
+			gc.setGlobalAlpha(1.0);
+			gc.drawImage(this.image, this.x, this.y);
+		}
+		
 	}
 
 	public void flashState() {
@@ -207,10 +250,12 @@ public class Boss extends CollidableEntity {
 			if (this.y < playerY && this.y <= (mY) + 100 - this.height)
 				y+=1;
 		}
-		// if(this.x>playerX)x--;
-		// if(this.y>playerY)y--;
-		// if(this.x<playerX)x++;
-		// if(this.y<playerY)y++;
+		if(this.hp<=0) {
+			phase2=false;
+			sp3=true;
+			this.tick=1;
+			return;
+		}
 		if (hp > 0) {
 			b4=false;
 			for (IRenderable i : RenderableHolder.getInstance().getEntities()) {
@@ -237,21 +282,21 @@ public class Boss extends CollidableEntity {
 			}
 			if(this.hp>=3&&this.hp<=6&&tick%50==0) {
 				if(bossImage==1) {
-					this.setImage(new Image("file:res/boss"+this.bossImage+".png"));
+					this.setImage(new Image("boss"+this.bossImage+".png"));
 					this.lastBossImage=bossImage;
 					bossImage++;
 				}else if(bossImage==2) {
 					if(this.lastBossImage==1) {
-						this.setImage(new Image("file:res/boss"+this.bossImage+".png"));
+						this.setImage(new Image("boss"+this.bossImage+".png"));
 						this.lastBossImage=bossImage;
 						bossImage++;
 					}else {
-						this.setImage(new Image("file:res/boss"+this.bossImage+".png"));
+						this.setImage(new Image("boss"+this.bossImage+".png"));
 						this.lastBossImage=bossImage;
 						bossImage--;
 					}
 				}else if(bossImage==3) {
-					this.setImage(new Image("file:res/boss"+this.bossImage+".png"));
+					this.setImage(new Image("boss"+this.bossImage+".png"));
 					this.lastBossImage=bossImage;
 					bossImage--;
 				}
@@ -261,7 +306,7 @@ public class Boss extends CollidableEntity {
 				//tick = 1;
 			}
 			if(!b4 && this.hp >= 1 && this.hp <= 2 && tick % division == 0 ) {
-				this.setImage(new Image("file:res/boss4.png"));
+				this.setImage(new Image("boss4.png"));
 				b2=true;
 				b3=true;
 				b4=true;
@@ -317,6 +362,39 @@ public class Boss extends CollidableEntity {
 			this.phase2 = true;
 			this.sp2 = false;
 			this.barrier = true;
+		}
+	}
+	
+	public void phase3() {
+		flashState();
+		if (tick % 500 == 0) {
+			breakBarrier();
+			//tick = 1;
+		}
+		tick++;
+		
+	}
+	
+	public void startPhase3() {
+		//this.setImage(new Image("file:res/bot2.png"));
+		flashState();
+		if (this.x > mX-50)
+			x -= 2;
+		if (this.y > mY-50)
+			y -= 2;
+		if (this.x < mX-50)
+			x += 2;
+		if (this.y < mY-50)
+			y += 2;
+		if ((this.x == (mX-50)||this.x == (mX-51)||this.x == (mX-49)) && (this.y == (mY-50)||this.y == (mY-51)||this.y == (mY-49))) {
+			//System.out.println("asd");
+			this.barrier = true;
+			tick++;
+			if(tick%100==0) {
+				sp3=false;
+				phase3=true;
+				tick=1;
+			}
 		}
 	}
 

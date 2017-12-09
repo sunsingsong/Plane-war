@@ -43,7 +43,7 @@ public class Barrier extends CollidableEntity {
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
 		if(boss.barrier) {
-			gc.setGlobalAlpha(0.5);
+			gc.setGlobalAlpha(0.4);
 			gc.setStroke(Color.DEEPSKYBLUE);
 			gc.setLineWidth(5);
 			//gc.fillOval(x, y, 50, 50);

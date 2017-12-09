@@ -15,8 +15,8 @@ public class Tank extends CollidableEntity {
 	private int lastTick=0;
 	public int direction =0;
 	public boolean fire = false;
-	
-	private static final int speed = 4;
+
+	private static final int speed = 3;
 	private int angle = 0; // angle 0 = EAST
 	private boolean flashing = false;
 	private int flashCounter = 0;
@@ -29,7 +29,7 @@ public class Tank extends CollidableEntity {
 		this.y = y;
 		this.z=1;
 		this.radius = 8;
-		this.setImage(new Image("res/player_front.png"));
+		this.setImage(new Image("player_front.png"));
 	}
 
 	private void forward() {
@@ -49,31 +49,31 @@ public class Tank extends CollidableEntity {
 	}
  
 
-	public void hitByMine() {
-		flashing = true;
-		flashCounter = 10;
-		flashDurationCounter = 10;
-	}
+//	public void hitByMine() {
+//		flashing = true;
+//		flashCounter = 10;
+//		flashDurationCounter = 10;
+//	}
 
 	public void update() {
 		for(IRenderable i:RenderableHolder.getInstance().getEntities()) {
 			if(this.collideWith((CollidableEntity)i)){
-				if((i instanceof Bullet)&&(((Bullet)i).isEnemy)){	
-					((Bullet)i).destroyed=true;
-					this.destroyed=true;
-				}
-				if(i instanceof Boss) {
-					this.destroyed=true;	
-				}
-				if(i instanceof Bomb) {
-					this.destroyed=true;
-				}
-				if(i instanceof Laser) {
-					this.destroyed=true;
-				}
-				if(i instanceof Enemy) {
-					this.destroyed=true;
-				}
+//				if((i instanceof Bullet)&&(((Bullet)i).isEnemy)){	
+//					((Bullet)i).destroyed=true;
+//					this.destroyed=true;
+//				}
+//				if(i instanceof Boss) {
+//					this.destroyed=true;	
+//				}
+//				if(i instanceof Bomb) {
+//					this.destroyed=true;
+//				}
+//				if(i instanceof Laser) {
+//					this.destroyed=true;
+//				}
+//				if(i instanceof Enemy) {
+//					this.destroyed=true;
+//				}
 			}
 		}
 		this.fire = false;
@@ -94,31 +94,32 @@ public class Tank extends CollidableEntity {
 		} else {
 			this.visible = !InputUtility.getKeyPressed(KeyCode.SHIFT);
 		}
-		if (InputUtility.getKeyPressed(KeyCode.LEFT)) {
+		if (InputUtility.getKeyPressed(KeyCode.A)) {
 			turnleft();
 			this.direction=2;
-			this.setImage(new Image("res/player_left.png"));
+			this.setImage(new Image("player_left.png"));
 		}
-		if (InputUtility.getKeyPressed(KeyCode.RIGHT)) {
+		if (InputUtility.getKeyPressed(KeyCode.D)) {
 			turnright();
 			this.direction=3;
-			this.setImage(new Image("res/player_right.png"));
+			this.setImage(new Image("player_right.png"));
 		}
-		if (InputUtility.getKeyPressed(KeyCode.UP)) {
+		if (InputUtility.getKeyPressed(KeyCode.W)) {
 			forward();
 			this.direction=0;
-			this.setImage(new Image("res/player_front.png"));
+			this.setImage(new Image("player_front.png"));
 		}
-		if (InputUtility.getKeyPressed(KeyCode.DOWN)) {
+		if (InputUtility.getKeyPressed(KeyCode.S)) {
 			backward();
 			this.direction=1;
-			this.setImage(new Image("res/player_down.png"));
+			this.setImage(new Image("player_down.png"));
 		}
 		
 		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
 			if(tick>=lastTick) {
 				tick=lastTick;
 				this.fire = true;
+				fire();
 				lastTick+=50;
 			}
 			//tick++;

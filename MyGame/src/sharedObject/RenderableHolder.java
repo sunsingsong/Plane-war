@@ -13,7 +13,6 @@ public class RenderableHolder {
 	private static final RenderableHolder instance = new RenderableHolder();
 	
 	private List<IRenderable> entities;
-
 	private IRenderable boss;
 	private Comparator<IRenderable> comparator;
 	
