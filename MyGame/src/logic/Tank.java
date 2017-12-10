@@ -18,9 +18,9 @@ public class Tank extends CollidableEntity {
 	private int hp=1;
 	private static final int speed = 4;
 	private int angle = 0; // angle 0 = EAST
-	private boolean flashing = false;
-	private int flashCounter = 0;
-	private int flashDurationCounter = 0;
+	boolean flashing = false;
+	int flashCounter = 10;
+	int flashDurationCounter = 10;
 
 	public Tank(int x, int y) {
 		this.width=40;
@@ -56,6 +56,7 @@ public class Tank extends CollidableEntity {
 //	}
 
 	public void update() {
+		flashState();
 		for(IRenderable i:RenderableHolder.getInstance().getEntities()) {
 			if(this.collideWith((CollidableEntity)i)){
 				if((i instanceof Bullet)&&(((Bullet)i).isEnemy)){	
@@ -66,13 +67,16 @@ public class Tank extends CollidableEntity {
 					this.destroyed=true;	
 				}
 				if(i instanceof Bomb) {
-					this.destroyed=true;
+					((Bomb)i).destroyed=true;
+					decreaseHp() ;
 				}
 				if(i instanceof Laser) {
-					this.destroyed=true;
+					((Laser)i).destroyed=true;
+					decreaseHp() ;
 				}
 				if(i instanceof Enemy) {
-					this.destroyed=true;
+					((Enemy)i).destroyed=true;
+					decreaseHp() ;
 				}
 			}
 		}
@@ -128,9 +132,30 @@ public class Tank extends CollidableEntity {
 	}
 	public void decreaseHp() {
 		this.hp--;
+		this.flashing=true;
 	}
 	public void increaseHp() {
 		this.hp++;
+	}
+	
+	public void flashState() {
+		if (flashing) {
+			if (flashCounter == 0) {
+				flashDurationCounter = 10;
+				flashCounter = 10;
+				this.visible = true;
+				flashing = false;
+			} else {
+				if (flashDurationCounter > 0) {
+					this.visible = flashCounter <= 5;
+					flashDurationCounter--;
+				} else {
+					this.visible = true;
+					flashDurationCounter = 10;
+					flashCounter--;
+				}
+			}
+		}
 	}
 
 	@Override

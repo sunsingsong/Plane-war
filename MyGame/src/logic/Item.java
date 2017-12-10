@@ -9,8 +9,6 @@ import sharedObject.RenderableHolder;
 import window.SceneManager;
 
 public class Item extends CollidableEntity{
-	private int x;
-	private int y;
 	public int itemType;
 	public int itemTick=0;
 	public Item() {
@@ -18,7 +16,7 @@ public class Item extends CollidableEntity{
 		this.x=rand.nextInt(SceneManager.SCENE_WIDTH);
 		this.y=rand.nextInt(SceneManager.SCENE_HEIGHT);
 		randomItem();
-		this.setImage(new Image("res/Armor.png"));
+		this.setImage(new Image("Armor.png"));
 	}
 	private void randomItem() {
 		Random rand= new Random();
@@ -31,9 +29,12 @@ public class Item extends CollidableEntity{
 			  this.itemTick=0;
 			}
 		else {
+			//System.out.println(this.x+"    "+this.y);
 			for (IRenderable i : RenderableHolder.getInstance().getEntities()) {
 				if (this.collideWith((CollidableEntity) i)) {
+					//System.out.println(this.x+"    "+this.y);
 					if (i instanceof Tank) {
+						//System.out.println("asd");
 						this.destroyed = true;
 						this.itemTick=0;
 						((Tank) i).increaseHp();
