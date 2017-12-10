@@ -1,31 +1,8 @@
-/Thumbs.db
-/boss1.png
-/boss2.png
-/boss3.png
-/boss4.png
-/boss5.png
-/earth.png
-/enemy1.png
-/enemy2.png
-/enemy3.png
-/fang1.png
-/fang2.png
-/fang3.png
-/fang4.png
-/fang5.png
-/fang6.png
-/playerTank_down.png
-/playerTank_left.png
-/playerTank_right.png
-/playerTank_up.png
-/player_down.png
-/player_front.png
-/player_left.png
-/player_right.png
-/space.png
-/sun.png
-/menu/
+/1.png
+/game/
+/input/
 /logic/
+<<<<<<< HEAD
 /res/
 /Armor.png
 /bot1.png
@@ -33,3 +10,15 @@
 /bot3.png
 /item.png
 /application/
+||||||| merged common ancestors
+/res/
+/Armor.png
+/bot1.png
+/bot2.png
+/bot3.png
+/item.png
+=======
+/menu/
+/sharedObject/
+/window/
+>>>>>>> 89831c4ce430819fe1f8d73278403ce42452bf40

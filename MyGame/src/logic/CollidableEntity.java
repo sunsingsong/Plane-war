@@ -31,6 +31,7 @@ public abstract class CollidableEntity extends Entity {
 				return Math.hypot(this.x+20 - (other.x+20), this.y+15 - (other.y+20)) <= this.radius + other.radius;
 			}
 			if(other instanceof Item) {
+				//System.out.println(other.x+"     "+other.y);
 				return Math.hypot(this.x+20 - (other.x+10), this.y+15 - (other.y+10)) <= this.radius + 10;
 			}
 			//System.out.println(result);
@@ -54,9 +55,23 @@ public abstract class CollidableEntity extends Entity {
 			}
 			return result;
 		}
+<<<<<<< HEAD
 		if(this instanceof Item && other instanceof Tank) {
 			return Math.hypot(this.x+12-(other.x+20),this.y+12-(other.y+15)) <= other.radius + 12;
 		}
+||||||| merged common ancestors
+		
+=======
+		
+		if(this instanceof Item) {
+			if(other instanceof Tank) {
+				//System.out.println("ssssasd");
+				//System.out.println((this.x)+"      "+(other.x+20)+"     "+(this.y)+"     "+(other.y+15));
+				return Math.hypot(this.x+12-(other.x+20),this.y+12-(other.y+15)) <= other.radius + 12;
+			}
+		}
+		
+>>>>>>> 89831c4ce430819fe1f8d73278403ce42452bf40
 		if(this instanceof Barrier) {
 			if (other instanceof Bullet) {
 //				System.out.print(other.x+other.width>=this.x);
