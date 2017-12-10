@@ -9,8 +9,6 @@ import sharedObject.RenderableHolder;
 import window.SceneManager;
 
 public class Item extends CollidableEntity{
-	private int x;
-	private int y;
 	public int itemType;
 	public int itemTick=0;
 	public Item() {
@@ -34,6 +32,7 @@ public class Item extends CollidableEntity{
 			for (IRenderable i : RenderableHolder.getInstance().getEntities()) {
 				if (this.collideWith((CollidableEntity) i)) {
 					if (i instanceof Tank) {
+						System.out.println("keep");
 						this.destroyed = true;
 						this.itemTick=0;
 						((Tank) i).increaseHp();
