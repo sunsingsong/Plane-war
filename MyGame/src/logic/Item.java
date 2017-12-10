@@ -33,9 +33,11 @@ public class Item extends CollidableEntity{
 		else {
 			for (IRenderable i : RenderableHolder.getInstance().getEntities()) {
 				if (this.collideWith((CollidableEntity) i)) {
-					if (i instanceof Tank)
+					if (i instanceof Tank) {
 						this.destroyed = true;
 						this.itemTick=0;
+						((Tank) i).increaseHp();
+					}
 				}
 			}
 		}

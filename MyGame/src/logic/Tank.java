@@ -15,7 +15,7 @@ public class Tank extends CollidableEntity {
 	private int lastTick=0;
 	public int direction =0;
 	public boolean fire = false;
-
+	private int hp=1;
 	private static final int speed = 4;
 	private int angle = 0; // angle 0 = EAST
 	private boolean flashing = false;
@@ -60,7 +60,7 @@ public class Tank extends CollidableEntity {
 			if(this.collideWith((CollidableEntity)i)){
 				if((i instanceof Bullet)&&(((Bullet)i).isEnemy)){	
 					((Bullet)i).destroyed=true;
-					this.destroyed=true;
+					this.decreaseHp();
 				}
 				if(i instanceof Boss) {
 					this.destroyed=true;	
@@ -76,6 +76,7 @@ public class Tank extends CollidableEntity {
 				}
 			}
 		}
+		if(this.hp==0) this.destroyed=true;
 		this.fire = false;
 		if (flashing) {
 			if (flashCounter == 0) {
@@ -119,22 +120,17 @@ public class Tank extends CollidableEntity {
 			if(tick>=lastTick) {
 				tick=lastTick;
 				this.fire = true;
-				fire();
 				lastTick+=50;
 			}
 			//tick++;
 		}
 		tick++;
-		
-//		if (InputUtility.isLeftClickTriggered()) {
-//			this.x = InputUtility.mouseX;
-//			this.y = InputUtility.mouseY;
-//		}
 	}
-	
-	public void fire() {
-//		Bullet aBullet = new Bullet(x,y,direction);
-//		RenderableHolder.getInstance().getEntities().add(aBullet);
+	public void decreaseHp() {
+		this.hp--;
+	}
+	public void increaseHp() {
+		this.hp++;
 	}
 
 	@Override
