@@ -54,7 +54,9 @@ public abstract class CollidableEntity extends Entity {
 			}
 			return result;
 		}
-		
+		if(this instanceof Item && other instanceof Tank) {
+			return Math.hypot(this.x+12-(other.x+20),this.y+12-(other.y+15)) <= other.radius + 12;
+		}
 		if(this instanceof Barrier) {
 			if (other instanceof Bullet) {
 //				System.out.print(other.x+other.width>=this.x);
