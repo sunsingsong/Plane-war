@@ -14,7 +14,6 @@ public class Tank extends CollidableEntity {
 	private int tick=0;
 	private int lastTick=0;
 	public int direction =0;
-	private int hp=1;
 	public boolean fire = false;
 
 	private static final int speed = 4;
@@ -30,7 +29,7 @@ public class Tank extends CollidableEntity {
 		this.y = y;
 		this.z=1;
 		this.radius = 8;
-		this.setImage(new Image("res/player_front.png"));
+		this.setImage(new Image("player_front.png"));
 	}
 
 	private void forward() {
@@ -61,10 +60,10 @@ public class Tank extends CollidableEntity {
 			if(this.collideWith((CollidableEntity)i)){
 				if((i instanceof Bullet)&&(((Bullet)i).isEnemy)){	
 					((Bullet)i).destroyed=true;
-					this.decreaseHp();
+					this.destroyed=true;
 				}
 				if(i instanceof Boss) {
-					this.destroyed=true;
+					this.destroyed=true;	
 				}
 				if(i instanceof Bomb) {
 					this.destroyed=true;
@@ -77,7 +76,6 @@ public class Tank extends CollidableEntity {
 				}
 			}
 		}
-		if(this.getHp()<=0) this.destroyed=true;
 		this.fire = false;
 		if (flashing) {
 			if (flashCounter == 0) {
@@ -99,22 +97,22 @@ public class Tank extends CollidableEntity {
 		if (InputUtility.getKeyPressed(KeyCode.LEFT)) {
 			turnleft();
 			this.direction=2;
-			this.setImage(new Image("res/player_left.png"));
+			this.setImage(new Image("player_left.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.RIGHT)) {
 			turnright();
 			this.direction=3;
-			this.setImage(new Image("res/player_right.png"));
+			this.setImage(new Image("player_right.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.UP)) {
 			forward();
 			this.direction=0;
-			this.setImage(new Image("res/player_front.png"));
+			this.setImage(new Image("player_front.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.DOWN)) {
 			backward();
 			this.direction=1;
-			this.setImage(new Image("res/player_down.png"));
+			this.setImage(new Image("player_down.png"));
 		}
 		
 		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
@@ -133,15 +131,7 @@ public class Tank extends CollidableEntity {
 //			this.y = InputUtility.mouseY;
 //		}
 	}
-	public void increaseHp() {
-		this.hp++;
-	}
-	public void decreaseHp() {
-		this.hp--;
-	}
-	public int getHp() {
-		return this.hp;
-	}
+	
 	public void fire() {
 //		Bullet aBullet = new Bullet(x,y,direction);
 //		RenderableHolder.getInstance().getEntities().add(aBullet);

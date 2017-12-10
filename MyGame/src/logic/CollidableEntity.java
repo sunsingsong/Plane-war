@@ -22,10 +22,16 @@ public abstract class CollidableEntity extends Entity {
 				return Math.hypot(this.x+20 - (other.x+other.width/2), this.y+15 - (other.y+other.height/2)) <= this.radius + other.radius;
 			}
 			if(other instanceof Laser) {
+				if(((Laser)other).getLine()==6) {
+					return Math.hypot(this.x + (20) - ((Laser)other).getDx(), this.y + (15) - (((Laser) other).getDy())) <= this.radius;
+				}
 				return Math.hypot(this.x + (20) - (other.x), this.y + (15) - (other.y)) <= this.radius;
 			}
 			if(other instanceof Enemy) {
 				return Math.hypot(this.x+20 - (other.x+20), this.y+15 - (other.y+20)) <= this.radius + other.radius;
+			}
+			if(other instanceof Item) {
+				return Math.hypot(this.x+20 - (other.x+10), this.y+15 - (other.y+10)) <= this.radius + 10;
 			}
 			//System.out.println(result);
 			return result;

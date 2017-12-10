@@ -12,21 +12,20 @@ import sharedObject.RenderableHolder;
 import window.SceneManager;
 
 public class GameLogic {
-	private List<Entity> gameObjectContainer; //ALL enemy bullet boss laser item
+	private List<Entity> gameObjectContainer;
 	private List<Entity> graveYard;
 	private List<Enemy> enemys;
 	private GameCanvas canvas;
 	private Tank tank;
 	private Boss boss;
 	private Laser ai;
-	/*private Enemy enemy;
-	private Item item;*/
+	//private Enemy enemy;
 	private Bullet aBullet;
 	private int upgrade = 0;
 	private int count = 0;
 	private int lastCount = 0;
-	//private int count1;
-	//private int count2;
+	private int count1;
+	private int count2;
 	private int tickSpawn=0;
 	private int lastTickSpawn=480;
 	boolean otk = false;
@@ -37,6 +36,7 @@ public class GameLogic {
 	private boolean bossOnce = true;
 	private boolean bossDead=false;
 	private int bossCount=1;
+	private int phaseBoss=1;
 
 	public GameLogic(GameCanvas canvas) {
 		this.gameObjectContainer = new ArrayList<Entity>();
@@ -44,28 +44,15 @@ public class GameLogic {
 		this.enemys = new ArrayList<Enemy>();
 		this.canvas = canvas;
 		tank = new Tank(380, 300);
-		ai = new Laser(300,300,2,1);
 		addNewObject(tank);
+		// boss = new Boss(355, 0);
+		// addNewObject(boss);
+		ai = new Laser(100, 100, 5, 2);
+		addNewObject(ai);
 		addNewAi();
 
 	}
-	public void logicUpdate() {
-		tickSpawn++;
-		if(this.countEnemy<4)
-			addNewAi();
-		RenderableHolder.getInstance().update();
-		checkEntityDead();
-		itemSpawn();
-		bossSpawn();
-		if(!bossOnce)
-			phaseBoss();
-		secretKey();
-		tankFire();
-		enemyFire();
-		count++;
-		canvas.paintComponent();
 
-	}
 	protected void addNewAi() {
 		if(this.tickSpawn>=this.lastTickSpawn) {
 			for (int i = 0; i < 4; i++) {
@@ -73,7 +60,7 @@ public class GameLogic {
 				Enemy enemy = new Enemy(200 + i * 40, 0 * i * 80);
 				if(this.bossDead) {
 					enemy.levelEnemy=this.bossCount;
-					enemy.setImage(new Image("res/bot"+this.bossCount+".png"));
+					enemy.setImage(new Image("bot"+this.bossCount+".png"));
 				}
 				addNewObject(enemy);
 				enemys.add(enemy);
@@ -101,72 +88,31 @@ public class GameLogic {
 		RenderableHolder.getInstance().remove(entity);
 	}
 
-	private void enemyFire() {
-		for (Enemy enemy1 : enemys) {
-			if (enemy1.fire == false)
-				continue;
-			Random rand = new Random();
-			int randDirect = rand.nextInt(2);
-			if (randDirect == 1) {
-				Bullet aBullet = new Bullet(enemy1.getX() + 20, enemy1.getY() + 15, enemy1.direction, true);
-				addNewObject(aBullet);
-			}
-		}
-	}
-	private void itemSpawn() {
-		if(this.killEnemyForItem%2==0&&this.killEnemyForItem!=0) {
-			Item item = new Item();
-			addNewObject(item);
-			this.killEnemyForItem=0;
-		}
-	}
-	private void bossSpawn() {
-		if (killEnemy == 4 &&this.killEnemy!=0) {
-			if(bossOnce) {
-			    boss = new Boss(355, 0);
-				addNewObject(boss);
-				bossOnce=false;
-				this.bossDead=false;
-			}
-			if(boss.destroyed) {
-				this.bossDead=true;
-				this.countEnemy=0;
-				this.bossOnce=true;
-				this.killEnemy=0;
-				this.bossCount++;
-			}
-			
-		}
-	}
-	private void checkEntityDead() {
-		for (Entity e : gameObjectContainer) {
-			if (e.destroyed != true) {
-				e.update();
-			} else {
-				if (e instanceof Enemy) {
-					killEnemy++;
-					this.killEnemyForItem++;
-					enemys.remove(e);
-				}
-				this.graveYard.add(e);
-				// System.out.println(e);
-			}
-		}
-		for (Entity e : graveYard) {
-			removeObject(e);
-			if (this.enemys.contains(e)) {
-				this.enemys.remove(e);
-			}
+	public void logicUpdate() {
+		tickSpawn++;
+		if(this.countEnemy<4)
+			addNewAi();
+		RenderableHolder.getInstance().update();
+		checkEntityDead();
+		itemSpawn();
+		bossSpawn();
+		if(!bossOnce)
+			phaseBoss();
+		secretKey();
+		tankFire();
+		ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
+		enemyFire();
+		count++;
+		canvas.paintComponent();
 
-		}
-		graveYard.clear();
 	}
+
 
 	private void phaseBoss() {
 		if (boss.phase1) {
 			if (boss.b1) {
 				ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
-				aBullet = new Bullet(boss.getX() + boss.width, boss.getY() + boss.height, boss.direction, true);
+				Bullet aBullet = new Bullet(boss.getX() + boss.width, boss.getY() + boss.height, boss.direction, true);
 				addNewObject(aBullet);
 			}
 		}
@@ -174,8 +120,8 @@ public class GameLogic {
 			if (boss.b2) {
 				ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
 				boss.playerPos(tank.x, tank.y);
-				int count1 = new Random().nextInt(8);
-				int count2 = new Random().nextInt(8);
+				count1 = new Random().nextInt(8);
+				count2 = new Random().nextInt(8);
 				// System.out.println(count1);
 				if (boss.barrier) {
 					Barrier barrier = new Barrier(boss);
@@ -221,25 +167,25 @@ public class GameLogic {
 		if (boss.phase3) {
 			if (start3) {
 				
-				Fang fang1 = new Fang(boss.x + (boss.width / 2) - (16), boss.y - 40, 1, new Image("res/fang1.png"), boss);
+				Fang fang1 = new Fang(boss.x + (boss.width / 2) - (16), boss.y - 40, 1, new Image("fang1.png"), boss, 1);
 				addNewObject(fang1);
 
-				Fang fang2 = new Fang(boss.x - (32), boss.y, 2, new Image("res/fang2.png"), boss);
+				Fang fang2 = new Fang(boss.x - (32), boss.y, 2, new Image("fang2.png"), boss,0);
 				addNewObject(fang2);
 
 				Fang fang3 = new Fang(boss.x - (32), boss.y + (boss.height / 2) + (16), 3, new Image("fang3.png"),
-						boss);
+						boss,0);
 				addNewObject(fang3);
 
 				Fang fang4 = new Fang(boss.x + (boss.width / 2) - (16), boss.y + 40 + boss.getHeight() - (32), 4,
-						new Image("fang4.png"), boss);
+						new Image("fang4.png"), boss,0);
 				addNewObject(fang4);
 
-				Fang fang5 = new Fang(boss.x + (boss.width), boss.y, 5, new Image("res/fang5.png"), boss);
+				Fang fang5 = new Fang(boss.x + (boss.width), boss.y + (boss.height / 2) + (16), 5, new Image("fang5.png"), boss,0);
 				addNewObject(fang5);
 
-				Fang fang6 = new Fang(boss.x + (boss.width), boss.y + (boss.height / 2) + (16), 6,
-						new Image("res/fang6.png"), boss);
+				Fang fang6 = new Fang(boss.x + (boss.width), boss.y, 6,
+						new Image("fang6.png"), boss,0);
 				addNewObject(fang6);
 				
 				boss.setFang(fang1, fang2, fang3, fang4, fang5, fang6);
@@ -256,6 +202,35 @@ public class GameLogic {
 				
 			}
 			
+			if(boss.b6) {
+				//System.out.println("asd");
+				Laser l21 = new Laser(boss.fang2.x+20,boss.fang6.y+20,7,1);
+				addNewObject(l21);
+				Laser l22 = new Laser(boss.fang2.x+20,boss.fang6.y+20,7,2);
+				addNewObject(l22);
+				Laser l23 = new Laser(boss.fang2.x+20,boss.fang6.y+20,7,3);
+				addNewObject(l23);
+				Laser l24 = new Laser(boss.fang2.x+20,boss.fang6.y+20,7,4);
+				addNewObject(l24);
+				
+				Laser l61 = new Laser(boss.fang6.x+20,boss.fang6.y+20,8,5);
+				addNewObject(l61);
+				Laser l62 = new Laser(boss.fang6.x+20,boss.fang6.y+20,8,6);
+				addNewObject(l62);
+				Laser l63 = new Laser(boss.fang6.x+20,boss.fang6.y+20,8,7);
+				addNewObject(l63);
+				Laser l64 = new Laser(boss.fang6.x+20,boss.fang6.y+20,8,8);
+				addNewObject(l64);
+			}
+			
+			if(boss.b7) {
+				for (int i = 1; i < 4; i++) {
+					Enemy e = new Enemy(200 + i * 40, 0 * i * 80);
+					addNewObject(e);
+					enemys.add(e);
+				}
+			}
+			
 			if (boss.barrier) {
 				Barrier barrier = new Barrier(boss);
 				addNewObject(barrier);
@@ -263,6 +238,7 @@ public class GameLogic {
 
 		}
 	}
+	
 	private void secretKey() {
 		if (InputUtility.getKeyPressed(KeyCode.U) && count - lastCount > 50) {
 			System.out.println("x");
@@ -277,6 +253,7 @@ public class GameLogic {
 			addNewObject(tank);
 		}
 	}
+	
 	private void tankFire() {
 		if (tank.fire) {
 			aBullet = new Bullet(tank.getX() + 20, tank.getY() + 15, tank.direction, false);
@@ -287,6 +264,71 @@ public class GameLogic {
 				aBullet.otk();
 			}
 			addNewObject(aBullet);
+		}
+	}
+	private void checkEntityDead() {
+		for (Entity e : gameObjectContainer) {
+			if (e.destroyed != true) {
+				e.update();
+			} else {
+				if (e instanceof Enemy) {
+					killEnemy++;
+					this.killEnemyForItem++;
+					enemys.remove(e);
+				}
+				this.graveYard.add(e);
+				// System.out.println(e);
+			}
+		}
+		for (Entity e : graveYard) {
+			removeObject(e);
+			if (this.enemys.contains(e)) {
+				this.enemys.remove(e);
+			}
+
+		}
+		this.graveYard.clear();
+	}
+	
+	
+	private void bossSpawn() {
+		if (killEnemy == 4 &&this.killEnemy!=0) {
+			if(bossOnce) {
+			    boss = new Boss(355, 0,phaseBoss);
+				addNewObject(boss);
+				bossOnce=false;
+				this.bossDead=false;
+			}
+			if(boss.destroyed) {
+				this.phaseBoss++;
+				this.bossDead=true;
+				this.countEnemy=0;
+				this.bossOnce=true;
+				this.killEnemy=0;
+				this.bossCount++;
+			}
+			
+		}
+	}
+	
+	private void itemSpawn() {
+		if(this.killEnemyForItem%2==0&&this.killEnemyForItem!=0) {
+			Item item = new Item();
+			addNewObject(item);
+			this.killEnemyForItem=0;
+		}
+	}
+	
+	private void enemyFire() {
+		for (Enemy enemy1 : enemys) {
+			if (enemy1.fire == false)
+				continue;
+			Random rand = new Random();
+			int randDirect = rand.nextInt(2);
+			if (randDirect == 1) {
+				Bullet aBullet = new Bullet(enemy1.getX() + 20, enemy1.getY() + 15, enemy1.direction, true);
+				addNewObject(aBullet);
+			}
 		}
 	}
 }

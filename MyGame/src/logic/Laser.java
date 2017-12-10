@@ -40,6 +40,9 @@ public class Laser extends CollidableEntity {
 		if (line == 2) {
 			l = new Laser(x, y, 4, direction);
 		}
+		if(line==7) {
+
+		}
 	}
 	
 	public Laser(int x,int y,int line,int direction,int px,int py,int no) {
@@ -61,6 +64,42 @@ public class Laser extends CollidableEntity {
 		if (this.x > SceneManager.SCENE_WIDTH || this.y > SceneManager.SCENE_HEIGHT || x < 0 || y < 0) {
 			this.destroyed = true;
 		}
+		if(line==7) {
+			switch(this.direction) {
+			case 1:
+				this.y-=this.speed;
+				break;
+			case 2:
+				this.y+=this.speed;
+				break;
+			case 3:
+				this.x-=this.speed;
+				break;
+			case 4:
+				this.x+=this.speed;
+				break;
+			}
+		}
+		if(line==8) {
+			switch(this.direction) {
+			case 5:
+				this.y-=this.speed;
+				this.x-=this.speed;
+				break;
+			case 6:
+				this.y-=this.speed;
+				this.x+=this.speed;
+				break;
+			case 7:
+				this.y+=this.speed;
+				this.x+=this.speed;
+				break;
+			case 8:
+				this.y+=this.speed;
+				this.x-=this.speed;
+				break;
+			}
+		}
 		if(line==6) {
 			this.dx+=xPlus;
 			this.dy+=yPlus;
@@ -69,6 +108,7 @@ public class Laser extends CollidableEntity {
 		if(line==5) {
 			int xx = new Random().nextInt(5);
 			int yy = new Random().nextInt(5);
+			//System.out.println(this.playerX+"   "+this.playerY);
 			if(this.x>=this.playerX) {
 				if(xx>1) {
 					this.x-=direction;
@@ -152,14 +192,22 @@ public class Laser extends CollidableEntity {
 		if(this.x>=SceneManager.SCENE_WIDTH) {
 			this.visible=false;
 		}
+		if(line==8) {
+			gc.setFill(Color.RED);
+			gc.fillRect(this.x, this.y, 10, 10);
+		}
+		if(line==7) {
+			gc.setFill(Color.AQUAMARINE);
+			gc.fillRect(this.x, this.y, 10, 10);
+		}
 		if(line==6) {
 			if(this.direction==10) {
 				if(this.no==1) gc.setFill(Color.PURPLE);
 				if(this.no==4) gc.setFill(Color.GREEN);
-				gc.fillRect(this.dx, this.dy, width, height);
+				gc.fillRect(this.dx, this.dy, 10, 10);
 			}
 			if(this.direction==11) {
-				gc.fillRect(this.dx, this.dy, height, width);
+				gc.fillRect(this.dx, this.dy, 10, 10);
 			}
 		}
 		if (line==2||line==4) {
@@ -210,5 +258,19 @@ public class Laser extends CollidableEntity {
 	public void setDirection(int direction) {
 		this.direction=direction;
 	}
+
+	public int getLine() {
+		return line;
+	}
+
+	public double getDx() {
+		return dx;
+	}
+
+	public double getDy() {
+		return dy;
+	}
+	
+	
 
 }

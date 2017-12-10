@@ -13,14 +13,14 @@ public class Boss extends CollidableEntity {
 	private static final Font TEXT_FONT = new Font("Monospace", 80);
 	private static final Font SCORE_TIME_FONT = new Font("Monospace", 30);
 	public int direction = 4;
-	private int hp = 3;
+	private int hp = 15;
 	private int speed = 3;
 	private int tick = 1;
 	private int lastTick = 0;
 	private int playerX;
 	private int playerY;
-	private int mX = (SceneManager.SCENE_WIDTH / 2 - this.width / 2);
-	private int mY = (SceneManager.SCENE_HEIGHT / 2 - this.height / 2);
+	int mX = (SceneManager.SCENE_WIDTH / 2 - this.width / 2);
+	int mY = (SceneManager.SCENE_HEIGHT / 2 - this.height / 2);
 	private int division=10;
 	private int bossImage=1;
 	private int lastBossImage;
@@ -29,11 +29,15 @@ public class Boss extends CollidableEntity {
 
     boolean barrier = true;
 	boolean spawn = true;
+	boolean haveEnemy;
+	boolean checkEnemy;
 	boolean b1;
 	boolean b2;
 	boolean b3;
 	boolean b4;
 	boolean b5;
+	boolean b6;
+	boolean b7;
 
 	boolean phase1 = false;
 	boolean sp1;
@@ -55,9 +59,28 @@ public class Boss extends CollidableEntity {
 	
 	boolean fangSet1=false;
 	boolean fangSet4=false;
+	
+	boolean fangSet2=false;
+	boolean fangSet6=false;
+	
+	boolean fangSet3=false;
+	boolean fangSet5=false;
 
-	public Boss(int x, int y) {
-		this.sp1  = true;
+	public Boss(int x, int y,int phase) {
+		switch(phase) {
+		case 1:
+			sp1=true;
+			this.hp=15;
+			break;
+		case 2:
+			sp2=true;
+			this.hp=6;
+			break;
+		case 3:
+			sp3=true;
+			this.hp=10;
+			break;
+		}
 		this.radius = 26;
 		this.width = 96;
 		this.height = 96;
@@ -72,10 +95,10 @@ public class Boss extends CollidableEntity {
 			startPhase1();
 		}
 		if (sp2) {
-			//startPhase2();
+			startPhase2();
 		}
-		if (sp3) {
-		//	startPhase3();
+		if (sp3)  {
+			startPhase3();
 		}
 		if (phase1) {
 			phase1();
@@ -97,9 +120,6 @@ public class Boss extends CollidableEntity {
 			gc.setFont(SCORE_TIME_FONT);
 			gc.fillText(""+this.hp, mX, mY);
 			gc.setGlobalAlpha(1.0);
-//			gc.setFill(Color.AQUA);
-//			gc.fillRect(this.x, this.y, 10, 10);
-//			gc.drawImage(new Image("file:res/bot1.png"), this.x, this.y);
 			gc.drawImage(this.image, this.x, this.y);
 		}
 		if(phase2) {
@@ -113,7 +133,6 @@ public class Boss extends CollidableEntity {
 			
 		}
 		if(sp3) {
-			//System.out.println("asd");
 			gc.setGlobalAlpha(1.0);
 			gc.drawImage(this.image, this.x, this.y);
 			if(!vab) {
@@ -123,21 +142,17 @@ public class Boss extends CollidableEntity {
 				gc.setFill(Color.WHITE);
 				gc.fillRect(0, 0,SceneManager.SCENE_WIDTH , SceneManager.SCENE_HEIGHT);
 			}else {
-				this.setImage(new Image("res/boss5.png"));
+				this.setImage(new Image("file:res/boss5.png"));
 				if(i>0) {
 					i-=0.1;
 					gc.setGlobalAlpha(i);
 					gc.setFill(Color.WHITE);
 					gc.fillRect(0, 0,SceneManager.SCENE_WIDTH , SceneManager.SCENE_HEIGHT);
 				}
-//				if(i<=0) {
-//					sp3=false;
-//					//System.out.println("asd");
-//				}
+
 			}
-//			gc.setFill(Color.WHITE);
-//			gc.fillRect(0, 0,SceneManager.SCENE_WIDTH , SceneManager.SCENE_HEIGHT);
 		}
+		
 		if(!phase1&&!phase2&&!sp3) {
 			gc.setGlobalAlpha(1.0);
 			gc.drawImage(this.image, this.x, this.y);
@@ -171,19 +186,17 @@ public class Boss extends CollidableEntity {
 			this.speed = 5;
 		}
 		if (hp <= 6) {
-			this.speed = 5;
+			this.speed = 8;
 		}
 		if (hp <= 3) {
-			this.speed = 5;
+			this.speed = 9;
 		}
 		if (hp <= 0) {
-			// this.visible=false;
-			this.phase1 = false;
-			// this.phase2=true;
-			this.hp = 6;
-			this.tick = 1;
-			this.sp2 = true;
 			this.destroyed=true;
+//			this.phase1 = false;
+//			this.hp = 6;
+//			this.tick = 1;
+//			this.sp2 = true;
 			return;
 		}
 
@@ -238,7 +251,6 @@ public class Boss extends CollidableEntity {
 			}
 			if (tick % ((10 - this.speed) * 6) == 0) {
 				b1 = true;
-				// fire(this.direction);
 			}
 		}
 		tick++;
@@ -250,6 +262,7 @@ public class Boss extends CollidableEntity {
 	}
 
 	public void phase2() {
+		//System.out.println("asd");
 		flashState();
 		if ((this.hp >= 5 && this.hp <= 6)||this.hp >=1 && this.hp<=2) {
 			if (this.x > playerX && this.x >= (mX) - 100)
@@ -262,9 +275,10 @@ public class Boss extends CollidableEntity {
 				y+=1;
 		}
 		if(this.hp<=0) {
-			phase2=false;
-			sp3=true;
-			this.tick=1;
+			this.destroyed=true;
+//			phase2=false;
+//			sp3=true;
+//			this.tick=1;
 			return;
 		}
 		if (hp > 0) {
@@ -277,9 +291,9 @@ public class Boss extends CollidableEntity {
 						this.flashing = true;
 						this.barrier = true;
 						tick = 1;
-						if(this.hp==4) {
-							this.sp2=true;
-						}
+//						if(this.hp==4) {
+//							this.sp2=true;
+//						}
 						if(this.division==10) {
 							this.division=5;
 						}else {
@@ -293,21 +307,21 @@ public class Boss extends CollidableEntity {
 			}
 			if(this.hp>=3&&this.hp<=6&&tick%50==0) {
 				if(bossImage==1) {
-					this.setImage(new Image("res/boss"+this.bossImage+".png"));
+					this.setImage(new Image("boss"+this.bossImage+".png"));
 					this.lastBossImage=bossImage;
 					bossImage++;
 				}else if(bossImage==2) {
 					if(this.lastBossImage==1) {
-						this.setImage(new Image("res/boss"+this.bossImage+".png"));
+						this.setImage(new Image("boss"+this.bossImage+".png"));
 						this.lastBossImage=bossImage;
 						bossImage++;
 					}else {
-						this.setImage(new Image("res/boss"+this.bossImage+".png"));
+						this.setImage(new Image("boss"+this.bossImage+".png"));
 						this.lastBossImage=bossImage;
 						bossImage--;
 					}
 				}else if(bossImage==3) {
-					this.setImage(new Image("res/boss"+this.bossImage+".png"));
+					this.setImage(new Image("boss"+this.bossImage+".png"));
 					this.lastBossImage=bossImage;
 					bossImage--;
 				}
@@ -317,7 +331,7 @@ public class Boss extends CollidableEntity {
 				//tick = 1;
 			}
 			if(!b4 && this.hp >= 1 && this.hp <= 2 && tick % division == 0 ) {
-				this.setImage(new Image("res/boss4.png"));
+				this.setImage(new Image("boss4.png"));
 				b2=true;
 				b3=true;
 				b4=true;
@@ -370,35 +384,114 @@ public class Boss extends CollidableEntity {
 //		flashState();
 		if ((this.x == (mX-50)||this.x == (mX-51)||this.x == (mX-49)) && (this.y == (mY-50)||this.y == (mY-51)||this.y == (mY-49))) {
 			//System.out.println("asd");
+			if(!phase2)this.hp = 6;
 			this.phase2 = true;
 			this.sp2 = false;
 			this.barrier = true;
+			this.tick = 1;
 		}
 	}
 	
 	public void phase3() {
 		b5=false;
+		b6=false;
+		b7=false;
+		haveEnemy=false;
+		for (IRenderable i : RenderableHolder.getInstance().getEntities()) {
+			if(i instanceof Enemy)haveEnemy=true;
+			if (this.collideWith((CollidableEntity) i)) {
+				if (i instanceof Bullet && !((Bullet) i).isEnemy && !flashing) {
+					((Bullet) i).destroyed = true;
+					this.hp -= 1;
+					this.flashing = true;
+					this.barrier = true;
+					tick = 1;
+					if(((this.hp>=3&&this.hp<=4)||(this.hp>=5&&this.hp<=6))&&!fangSet3&&!fangSet5) {
+						b7=true;
+						checkEnemy=true;
+					}
+				}
+			}
+		}
 		flashState();
-		if (tick % 500 == 0) {
+		if(checkEnemy) {
+			if(!haveEnemy&&this.tick>10) {
+				breakBarrier();
+			}
+		}
+		else if (tick % 500 == 0) {
 			breakBarrier();
-			//tick = 1;
+		}
+		if(this.hp>=1&&this.hp<=2) {
+			this.fang1.destroyed=true;
+			this.fang2.destroyed=true;
+			this.fang3.destroyed=true;
+			this.fang4.destroyed=true;
+			this.fang5.destroyed=true;
+			this.fang6.destroyed=true;
+		}
+	
+		if(((this.hp>=3&&this.hp<=4)||(this.hp>=9&&this.hp<=10))&&tick%100==0&&!fangSet1&&!fangSet4) {
+			b5=true;
+		}
+		if(((this.hp>=3&&this.hp<=4)||(this.hp>=7&&this.hp<=8))&&tick%100==0&&!fangSet2&&!fangSet6) {
+			b6=true;
+		}
+		if(this.hp==8&&!this.fang2.f2&&!this.fang6.f2) {
+			this.fangSet2=true;
+			this.fangSet6=true;
+		}
+		if(this.hp==6&&!this.fang3.f3&&!this.fang5.f3) {
+			this.fangSet3=true;
+			this.fangSet5=true;
 		}
 		if(fangSet1) {
 			if(fang1.setup) {
-				b5=true;
+				//b5=true;
 				fangSet1=false;
+				tick=1;
 			}
 		}
 		if(fangSet4) {
 			if(fang4.setup) {
-				b5=true;
+				//b5=true;
 				fangSet4=false;
+				tick=1;
 			}
 		}
-		if (!fangSet1&&!fangSet4&&tick % ((10 - this.speed) * 6) == 0) {
-			b5 = true;
-			// fire(this.direction);
+		if(fangSet2) {
+			if(fang2.setup) {
+				//b6=true;
+				fangSet2=false;
+				tick=1;
+				this.division=100;
+			}
 		}
+		if(fangSet6) {
+			if(fang6.setup) {
+				//b6=true;
+				fangSet6=false;
+				tick=1;
+			}
+		}
+		if(fangSet3) {
+			if(fang3.setup) {
+				//b6=true;
+				fangSet3=false;
+				tick=1;
+			}
+		}
+		if(fangSet5) {
+			if(fang5.setup) {
+				//b6=true;
+				fangSet5=false;
+				tick=1;
+			}
+		}
+//		if (!fangSet1&&!fangSet4&&tick % ((10 - this.speed) * 6) == 0) {
+//			b5 = true;
+//			// fire(this.direction);
+//		}
 		tick++;
 		
 	}
@@ -424,6 +517,8 @@ public class Boss extends CollidableEntity {
 				tick=1;
 			}
 		}
+		this.hp=10;
+		this.division=50;
 	}
 	
 	public void setFang(Fang fang1,Fang fang2,Fang fang3,Fang fang4,Fang fang5,Fang fang6) {
