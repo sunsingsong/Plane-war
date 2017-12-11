@@ -47,15 +47,9 @@ public class Tank extends CollidableEntity {
 	private void turnright() {
 		this.x+=(this.x>=SceneManager.SCENE_WIDTH-40)?0:speed;
 	}
- 
-
-//	public void hitByMine() {
-//		flashing = true;
-//		flashCounter = 10;
-//		flashDurationCounter = 10;
-//	}
 
 	public void update() {
+		//System.out.println(this.hp);
 		flashState();
 		for(IRenderable i:RenderableHolder.getInstance().getEntities()) {
 			if(this.collideWith((CollidableEntity)i)){
@@ -67,7 +61,6 @@ public class Tank extends CollidableEntity {
 					this.destroyed=true;	
 				}
 				if(i instanceof Bomb) {
-					((Bomb)i).destroyed=true;
 					decreaseHp() ;
 				}
 				if(i instanceof Laser) {
@@ -75,7 +68,6 @@ public class Tank extends CollidableEntity {
 					decreaseHp() ;
 				}
 				if(i instanceof Enemy) {
-					((Enemy)i).destroyed=true;
 					decreaseHp() ;
 				}
 			}
@@ -132,6 +124,10 @@ public class Tank extends CollidableEntity {
 	}
 	public void decreaseHp() {
 		this.hp--;
+		if(hp==0) {
+			//SceneManager.gotoSceneOf(gameOver);
+			this.destroyed=true;
+		}
 		this.flashing=true;
 	}
 	public void increaseHp() {

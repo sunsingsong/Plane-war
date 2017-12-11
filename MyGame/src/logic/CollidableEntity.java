@@ -55,10 +55,23 @@ public abstract class CollidableEntity extends Entity {
 			}
 			return result;
 		}
+<<<<<<< HEAD
 
 		if(this instanceof Item && other instanceof Tank) {
 			return Math.hypot(this.x+12-(other.x+20),this.y+12-(other.y+15)) <= other.radius + 12;
 		}
+||||||| merged common ancestors
+<<<<<<< HEAD
+		if(this instanceof Item && other instanceof Tank) {
+			return Math.hypot(this.x+12-(other.x+20),this.y+12-(other.y+15)) <= other.radius + 12;
+		}
+||||||| merged common ancestors
+		
+=======
+		
+=======
+		
+>>>>>>> 5f10c810c4e800e474adc7fed44fdd1475e43213
 		if(this instanceof Item) {
 			if(other instanceof Tank) {
 				//System.out.println("ssssasd");
