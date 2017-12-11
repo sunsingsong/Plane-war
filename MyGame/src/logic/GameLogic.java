@@ -34,7 +34,7 @@ public class GameLogic {
 	public static int killEnemy = 0;
 	public int killEnemyForItem=0;
 	private boolean bossOnce = true;
-	private boolean bossDead=false;
+	private boolean bossDead=true;
 	private int bossCount=1;
 	private int phaseBoss=1;
 
@@ -272,7 +272,6 @@ public class GameLogic {
 				e.update();
 			} else {
 				if (e instanceof Enemy) {
-					killEnemy++;
 					this.killEnemyForItem++;
 					enemys.remove(e);
 				}
@@ -293,7 +292,7 @@ public class GameLogic {
 	
 	private void bossSpawn() {
 		if (killEnemy == 4 &&this.killEnemy!=0) {
-			if(bossOnce) {
+			if(bossOnce&&this.bossDead) {
 			    boss = new Boss(355, 0,phaseBoss);
 				addNewObject(boss);
 				bossOnce=false;

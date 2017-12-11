@@ -34,12 +34,8 @@ public class Item extends CollidableEntity{
 				if (this.collideWith((CollidableEntity) i)) {
 					//System.out.println(this.x+"    "+this.y);
 					if (i instanceof Tank) {
-<<<<<<< HEAD
 						System.out.println("keep");
-||||||| merged common ancestors
-=======
-						//System.out.println("asd");
->>>>>>> 89831c4ce430819fe1f8d73278403ce42452bf40
+
 						this.destroyed = true;
 						this.itemTick=0;
 						((Tank) i).increaseHp();
