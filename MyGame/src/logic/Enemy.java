@@ -101,40 +101,50 @@ public class Enemy extends CollidableEntity {
 		if (tick1 >= lastTick1) {
 			if (randDirect == 0) {
 				forward();
-				this.direction = 0;
+				if(this.direction!=0)
+					this.direction = 0;
 
 			} else if (randDirect == 1) {
 				backward();
+				if(this.direction!=1)
 				this.direction = 1;
 
 			} else if (randDirect == 2) {
 				turnleft();
+				if(this.direction!=1)
 				this.direction = 2;
 
 			} else if (randDirect == 3) {
 				turnright();
+				if(this.direction!=3)
 				this.direction = 3;
 
 			}
+			int randTick = rand.nextInt(240)+60;
 			tick1 = lastTick1;
-			lastTick1 += 100;
+			lastTick1 += randTick;
 		} else {
 			if (this.direction == 0) {
 				forward();
+				if(this.y<=this.height)
+					this.direction=1;
 			} else if (this.direction == 1) {
 				backward();
-				if (this.y <= 0) {
+				if (this.y >= SceneManager.SCENE_HEIGHT-this.height) {
+					System.out.println(this.y);
 					this.direction = 0;
 
 				}
 			} else if (this.direction == 2) {
 				turnleft();
-				if (this.x <= 0) {
+				if (this.x <= this.width) {
 					this.direction = 3;
 
 				}
 			} else if (this.direction == 3) {
 				turnright();
+				if(this.x>=SceneManager.SCENE_WIDTH-this.width)
+					this.direction=2;
 			}
 		}
 		tick1++;

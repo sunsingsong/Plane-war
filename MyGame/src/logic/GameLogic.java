@@ -47,7 +47,7 @@ public class GameLogic {
 		addNewObject(tank);
 		// boss = new Boss(355, 0);
 		// addNewObject(boss);
-		ai = new Laser(10, 10, 5, 2);
+		ai = new Laser(100, 100, 5, 2);
 		addNewObject(ai);
 		addNewAi();
 
@@ -111,10 +111,6 @@ public class GameLogic {
 	private void phaseBoss() {
 		if (boss.phase1) {
 			if (boss.b1) {
-				if(ai.destroyed) {
-					ai = new Laser(10, 10, 5, 2);
-					addNewObject(ai);
-				}
 				ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
 				Bullet aBullet = new Bullet(boss.getX() + boss.width, boss.getY() + boss.height, boss.direction, true);
 				addNewObject(aBullet);
@@ -122,10 +118,6 @@ public class GameLogic {
 		}
 		if (boss.phase2) {
 			if (boss.b2) {
-				if(ai.destroyed) {
-					ai = new Laser(10, 10, 5, 2);
-					addNewObject(ai);
-				}
 				ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
 				boss.playerPos(tank.x, tank.y);
 				count1 = new Random().nextInt(8);
@@ -162,10 +154,6 @@ public class GameLogic {
 
 			}
 			if (boss.b3) {
-				if(ai.destroyed) {
-					ai = new Laser(10, 10, 5, 2);
-					addNewObject(ai);
-				}
 				ai.setDirection(3);
 				ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
 				if (boss.barrier) {
@@ -242,14 +230,6 @@ public class GameLogic {
 					enemys.add(e);
 				}
 			}
-			if(boss.b8) {
-				boss.playerPos(tank.x, tank.y);
-			}
-			
-			if(boss.bomb) {
-				Bomb bomb = new Bomb(boss.getX()+50, boss.getY()+50, boss);
-				addNewObject(bomb);
-			}
 			
 			if (boss.barrier) {
 				Barrier barrier = new Barrier(boss);
@@ -293,6 +273,7 @@ public class GameLogic {
 			} else {
 				if (e instanceof Enemy) {
 					this.killEnemyForItem++;
+					this.killEnemy++;
 					enemys.remove(e);
 				}
 				this.graveYard.add(e);
@@ -311,17 +292,11 @@ public class GameLogic {
 	
 	
 	private void bossSpawn() {
+	
 		if (killEnemy == 4 &&this.killEnemy!=0) {
-<<<<<<< HEAD
-			if(bossOnce&&this.bossDead) {
-			    boss = new Boss(355, 0,phaseBoss);
-||||||| merged common ancestors
 			if(bossOnce) {
+				
 			    boss = new Boss(355, 0,phaseBoss);
-=======
-			if(bossOnce) {
-			    boss = new Boss(355, 0,3);
->>>>>>> 5f10c810c4e800e474adc7fed44fdd1475e43213
 				addNewObject(boss);
 				bossOnce=false;
 				this.bossDead=false;

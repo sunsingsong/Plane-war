@@ -50,6 +50,8 @@ public class Tank extends CollidableEntity {
 
 	public void update() {
 		//System.out.println(this.hp);
+		//System.out.println(this.y);
+		
 		flashState();
 		for(IRenderable i:RenderableHolder.getInstance().getEntities()) {
 			if(this.collideWith((CollidableEntity)i)){
