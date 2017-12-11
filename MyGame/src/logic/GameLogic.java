@@ -295,8 +295,14 @@ public class GameLogic {
 	
 		if (killEnemy == 4 &&this.killEnemy!=0) {
 			if(bossOnce) {
+<<<<<<< HEAD
 				
 			    boss = new Boss(355, 0,phaseBoss);
+||||||| merged common ancestors
+			    boss = new Boss(355, 0,3);
+=======
+			    boss = new Boss(355, 0,phaseBoss);
+>>>>>>> 147aec183cc167c2ccf5f604c319e3fed8d11919
 				addNewObject(boss);
 				bossOnce=false;
 				this.bossDead=false;

@@ -1,3 +1,34 @@
 /1.png
+<<<<<<< HEAD
 /boss6.png
 /logic/
+||||||| merged common ancestors
+/game/
+/input/
+/logic/
+/menu/
+/sharedObject/
+/window/
+/boss6.png
+=======
+/application/
+/boss6.png
+/drawing/
+/game/
+/input/
+/item.png
+/logic/
+/menu/
+/playerTank_down.png
+/playerTank_left.png
+/playerTank_right.png
+/playerTank_up.png
+/player_down.png
+/player_front.png
+/player_left.png
+/player_right.png
+/sharedObject/
+/space.png
+/sun.png
+/window/
+>>>>>>> 147aec183cc167c2ccf5f604c319e3fed8d11919
