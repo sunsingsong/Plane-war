@@ -2,23 +2,7 @@
 /game/
 /input/
 /logic/
-<<<<<<< HEAD
-/res/
-/Armor.png
-/bot1.png
-/bot2.png
-/bot3.png
-/item.png
-/application/
-||||||| merged common ancestors
-/res/
-/Armor.png
-/bot1.png
-/bot2.png
-/bot3.png
-/item.png
-=======
 /menu/
 /sharedObject/
 /window/
->>>>>>> 89831c4ce430819fe1f8d73278403ce42452bf40
+/boss6.png

@@ -13,8 +13,8 @@ public class Item extends CollidableEntity{
 	public int itemTick=0;
 	public Item() {
 		Random rand= new Random();
-		this.x=rand.nextInt(SceneManager.SCENE_WIDTH);
-		this.y=rand.nextInt(SceneManager.SCENE_HEIGHT);
+		this.x=rand.nextInt(SceneManager.SCENE_WIDTH-12);
+		this.y=rand.nextInt(SceneManager.SCENE_HEIGHT-12);
 		randomItem();
 		this.setImage(new Image("Armor.png"));
 	}
@@ -34,12 +34,7 @@ public class Item extends CollidableEntity{
 				if (this.collideWith((CollidableEntity) i)) {
 					//System.out.println(this.x+"    "+this.y);
 					if (i instanceof Tank) {
-<<<<<<< HEAD
-						System.out.println("keep");
-||||||| merged common ancestors
-=======
 						//System.out.println("asd");
->>>>>>> 89831c4ce430819fe1f8d73278403ce42452bf40
 						this.destroyed = true;
 						this.itemTick=0;
 						((Tank) i).increaseHp();
