@@ -314,7 +314,7 @@ public class GameLogic {
 	private void bossSpawn() {
 		if (killEnemy == 4 &&this.killEnemy!=0) {
 			if(bossOnce) {
-			    boss = new Boss(355, 0,3);
+			    boss = new Boss(355, 0,phaseBoss);
 				addNewObject(boss);
 				bossOnce=false;
 				this.bossDead=false;
