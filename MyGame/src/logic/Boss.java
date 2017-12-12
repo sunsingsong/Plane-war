@@ -201,10 +201,10 @@ public class Boss extends CollidableEntity {
 			this.speed = 5;
 		}
 		if (hp <= 6) {
-			this.speed = 8;
+			this.speed = 7;
 		}
 		if (hp <= 3) {
-			this.speed = 9;
+			this.speed = 8;
 		}
 		if (hp <= 0) {
 			this.destroyed=true;

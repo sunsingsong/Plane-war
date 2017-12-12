@@ -36,6 +36,7 @@ public class GameLogic {
 	private boolean bossDead=true;
 	private int bossCount=1;
 	private int phaseBoss=1;
+	public boolean isEnd = false;
 
 	public GameLogic(GameCanvas canvas) {
 		this.gameObjectContainer = new ArrayList<Entity>();
@@ -86,23 +87,23 @@ public class GameLogic {
 		gameObjectContainer.remove(entity);
 		RenderableHolder.getInstance().remove(entity);
 	}
-
+	public void endGame() {
+		if(tank.getHp()==0) {
+			//isEnd = true;
+			//SceneManager.gotoEndGame();
+		}
+		else if(this.phaseBoss==4) {
+			isEnd = true;
+			SceneManager.gotoWinnerGame();
+		}
+			
+	}
 	public void logicUpdate() {
 		String time = "";
 		tickSpawn++;
 		if(this.countEnemy<4)
 			addNewAi();
-		if(this.killEnemy%4==0&&this.killEnemy!=0) {
-			if(this.bossTickSpawn>=180) {
-				bossSpawn();
-				this.bossTickSpawn=180;
-				time="";
-			}
-			else {
-				this.bossTickSpawn++;
-				time = (3-this.bossTickSpawn/60)+"";
-			}
-		}
+		time=waitBossSpawn();
 		RenderableHolder.getInstance().update();
 		checkEntityDead();
 		itemSpawn();
@@ -114,8 +115,21 @@ public class GameLogic {
 		enemyFire();
 		count++;
 		canvas.paintComponent(time);
-		
+		//endGame();
 
+	}
+	private String waitBossSpawn() {
+		if(this.killEnemy%4==0&&this.killEnemy!=0) {
+			if(this.bossTickSpawn>=180) {
+				bossSpawn();
+			}
+			else {
+				this.bossTickSpawn++;
+				String time = (3-this.bossTickSpawn/60)+"";
+				return time;
+			}
+		}
+		return "";
 	}
 	private void secretKey() {
 		if (InputUtility.getKeyPressed(KeyCode.U) && count - lastCount > 50) {

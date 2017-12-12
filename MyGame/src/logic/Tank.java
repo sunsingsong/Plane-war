@@ -1,9 +1,11 @@
 package logic;
 
+import game.EndGame;
 import input.InputUtility;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import sharedObject.IRenderable;
@@ -126,16 +128,14 @@ public class Tank extends CollidableEntity {
 	}
 	public void decreaseHp() {
 		this.hp--;
-		if(hp==0) {
-			//SceneManager.gotoSceneOf(gameOver);
-			this.destroyed=true;
-		}
 		this.flashing=true;
 	}
 	public void increaseHp() {
 		this.hp++;
 	}
-	
+	public int getHp() {
+		return this.hp;
+	}
 	public void flashState() {
 		if (flashing) {
 			if (flashCounter == 0) {
@@ -155,6 +155,7 @@ public class Tank extends CollidableEntity {
 			}
 		}
 	}
+	
 
 	@Override
 	public void draw(GraphicsContext gc) {

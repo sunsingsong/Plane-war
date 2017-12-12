@@ -28,6 +28,7 @@ public class GameScreen extends Canvas {
 	}
 
 	public void paintComponent() {
+		
 		GraphicsContext gc = this.getGraphicsContext2D();
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, getWidth(), getHeight());

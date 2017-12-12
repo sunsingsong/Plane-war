@@ -20,7 +20,8 @@ public class GameMain {
 		
 		AnimationTimer animation = new AnimationTimer() {
 			public void handle(long now) {
-				logic.logicUpdate();
+				if(!logic.isEnd)
+					logic.logicUpdate();
 				//canvas.paintComponent();
 			}
 		};
