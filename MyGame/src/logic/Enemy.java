@@ -131,7 +131,6 @@ public class Enemy extends CollidableEntity {
 			} else if (this.direction == 1) {
 				backward();
 				if (this.y >= SceneManager.SCENE_HEIGHT-this.height) {
-					System.out.println(this.y);
 					this.direction = 0;
 
 				}

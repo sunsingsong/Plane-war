@@ -17,12 +17,16 @@ public class Tank extends CollidableEntity {
 	private int lastTick=0;
 	public int direction =0;
 	public boolean fire = false;
-	private int hp=1;
+	private int hp;
 	private static final int speed = 4;
 	private int angle = 0; // angle 0 = EAST
 	boolean flashing = false;
 	int flashCounter = 10;
 	int flashDurationCounter = 10;
+	private boolean isHpdecrese=true;
+	AudioClip hit1 = new AudioClip(ClassLoader.getSystemResource("bullet_hit_1.wav").toString());
+	AudioClip hit2 = new AudioClip(ClassLoader.getSystemResource("bullet_hit_2.wav").toString());
+
 
 	public Tank(int x, int y) {
 		this.width=40;
@@ -32,6 +36,7 @@ public class Tank extends CollidableEntity {
 		this.z=1;
 		this.radius = 8;
 		this.setImage(new Image("player_front.png"));
+		this.hp=4;
 	}
 
 	private void forward() {
@@ -51,9 +56,6 @@ public class Tank extends CollidableEntity {
 	}
 
 	public void update() {
-		//System.out.println(this.hp);
-		//System.out.println(this.y);
-		
 		flashState();
 		for(IRenderable i:RenderableHolder.getInstance().getEntities()) {
 			if(this.collideWith((CollidableEntity)i)){
@@ -76,10 +78,18 @@ public class Tank extends CollidableEntity {
 				}
 			}
 		}
-		if(this.hp==0) this.destroyed=true;
+		if(this.hp==0) {
+			hit2.play();
+			this.destroyed=true;
+		}
+		if(tick%60==0) {
+			isHpdecrese=true;
+		}
 		this.fire = false;
 		if (flashing) {
 			if (flashCounter == 0) {
+				flashDurationCounter = 10;
+				flashCounter = 10;
 				this.visible = true;
 				flashing = false;
 			} else {
@@ -92,9 +102,7 @@ public class Tank extends CollidableEntity {
 					flashCounter--;
 				}
 			}
-		} else {
-			this.visible = !InputUtility.getKeyPressed(KeyCode.SHIFT);
-		}
+		} 
 		if (InputUtility.getKeyPressed(KeyCode.LEFT)) {
 			turnleft();
 			this.direction=2;
@@ -102,7 +110,7 @@ public class Tank extends CollidableEntity {
 		}
 		if (InputUtility.getKeyPressed(KeyCode.RIGHT)) {
 			turnright();
-			this.direction=3;
+			this.direction=3; 
 			this.setImage(new Image("player_right.png"));
 		}
 		if (InputUtility.getKeyPressed(KeyCode.UP)) {
@@ -127,7 +135,15 @@ public class Tank extends CollidableEntity {
 		tick++;
 	}
 	public void decreaseHp() {
-		this.hp--;
+		if(this.isHpdecrese) {
+			this.hp--;
+			isHpdecrese=false;
+			hit1.play();
+		}
+		if(hp==0) {
+			hit2.play();
+			this.destroyed=true;
+		}
 		this.flashing=true;
 	}
 	public void increaseHp() {

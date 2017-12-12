@@ -4,6 +4,7 @@ import java.util.Random;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
@@ -14,6 +15,7 @@ import window.SceneManager;
 public class Boss extends CollidableEntity {
 	private static final Font TEXT_FONT = new Font("Monospace", 80);
 	private static final Font SCORE_TIME_FONT = new Font("Monospace", 30);
+	AudioClip damaged = new AudioClip(ClassLoader.getSystemResource("flashing1.wav").toString());
 	public int direction = 4;
 	private int hp = 15;
 	private int speed = 3;
@@ -221,6 +223,7 @@ public class Boss extends CollidableEntity {
 				if (i instanceof Bullet && !((Bullet) i).isEnemy && !flashing) {
 					((Bullet) i).destroyed = true;
 					this.hp -= ((Bullet) i).getDamage();
+					damaged.play();
 					this.flashing = true;
 				}
 			}
@@ -303,12 +306,10 @@ public class Boss extends CollidableEntity {
 					if (i instanceof Bullet && !((Bullet) i).isEnemy) {
 						((Bullet) i).destroyed = true;
 						this.hp -= 1;
+						damaged.play();
 						this.flashing = true;
 						this.barrier = true;
 						tick = 1;
-//						if(this.hp==4) {
-//							this.sp2=true;
-//						}
 						if(this.division==10) {
 							this.division=5;
 						}else {
@@ -355,10 +356,7 @@ public class Boss extends CollidableEntity {
 				b3=false;
 			}
 			if (!b4 && this.hp >= 5 && this.hp <= 6 && tick % division == 0 ) {
-				// this.x++;
-				// this.y++;
 				b2 = true;
-				// lastTick=tick;
 			} else if(!b4){
 				b2 = false;
 			}
@@ -394,11 +392,7 @@ public class Boss extends CollidableEntity {
 			x += 2;
 		if (this.y < mY-50)
 			y += 2;
-//		System.out.println(this.x+" "+this.y);
-//		this.flashing = true;
-//		flashState();
 		if ((this.x == (mX-50)||this.x == (mX-51)||this.x == (mX-49)) && (this.y == (mY-50)||this.y == (mY-51)||this.y == (mY-49))) {
-			//System.out.println("asd");
 			if(!phase2)this.hp = 6;
 			this.phase2 = true;
 			this.sp2 = false;
@@ -418,6 +412,7 @@ public class Boss extends CollidableEntity {
 				if (i instanceof Bullet && !((Bullet) i).isEnemy && !flashing) {
 					((Bullet) i).destroyed = true;
 					this.hp -= 1;
+					damaged.play();
 					this.flashing = true;
 					if(!sp4) {
 						this.barrier = true;
@@ -439,7 +434,7 @@ public class Boss extends CollidableEntity {
 		else if (sp4) {
 			breakBarrier();
 		}
-		else if (tick % 5 == 0) {
+		else if (tick % 500 == 0) {
 			breakBarrier();
 		}
 		
