@@ -99,6 +99,7 @@ public class GameLogic {
 			
 	}
 	public void logicUpdate() {
+		endGame();
 		String time = "";
 		tickSpawn++;
 		if(this.countEnemy<4)
@@ -107,8 +108,9 @@ public class GameLogic {
 		RenderableHolder.getInstance().update();
 		checkEntityDead();
 		itemSpawn();
-		if(!bossOnce)
+		if(!bossDead)
 			phaseBoss();
+		
 		secretKey();
 		tankFire();
 		ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
