@@ -4,6 +4,7 @@ import input.InputUtility;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.transform.Affine;
 import logic.Bomb;
 import logic.Boss;
@@ -37,7 +38,7 @@ public class GameCanvas extends Canvas {
 
 	}
 
-	public void paintComponent() {
+	public void paintComponent(String time) {
 		gc.setFill(Color.BLACK);
 		gc.fillRect(0, 0, getWidth(), getHeight());
 		for (IRenderable entity : RenderableHolder.getInstance().getEntities()) {
@@ -48,41 +49,10 @@ public class GameCanvas extends Canvas {
 			}
 			
 		}
+		gc.setFill(Color.RED);
+		gc.setFont(new Font("tahoma",50));
+		gc.fillText(time, SceneManager.SCENE_WIDTH/2, SceneManager.SCENE_HEIGHT/2);
 	}
 	
-//	public void phase1() {
-//		//Fill your code
-//		RenderableHolder.getInstance().getBoss() = new Boss(this.getWidth()/2,this.getHeight()/2);
-//		phase1=true;
-//		Thread t = new Thread(new Runnable() {
-//			public void run() {
-//				try {
-//					long lastLoopStartTime = System.nanoTime();
-//					while(true) {
-//						long elapsedTime = System.nanoTime() - lastLoopStartTime;
-//						Thread.sleep(10);
-//						updateBoss1(elapsedTime);
-//					}
-//					
-//				} catch (InterruptedException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				
-//			}
-//		});
-//		t.start();
-//	}
-//	
-//	private void updateBoss1(long now) {
-//		double wordX = (1 + Math.sin(now * 1e-9)) * (0.5 * (SceneManager.SCENE_WIDTH));
-//		double wordY = 0.25 * (SceneManager.SCENE_HEIGHT);
-//		
-//		GraphicsContext gc = this.getGraphicsContext2D();
-//		RenderableHolder.getInstance().getBoss().get;
-//		gc.drawImage(Boss.getImage(), wordX, wordY);
-//	}
 	
-	
-
 }

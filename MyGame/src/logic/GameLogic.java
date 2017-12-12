@@ -9,6 +9,7 @@ import input.InputUtility;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import sharedObject.RenderableHolder;
+import sun.misc.GC;
 import window.SceneManager;
 
 public class GameLogic {
@@ -19,14 +20,12 @@ public class GameLogic {
 	private Tank tank;
 	private Boss boss;
 	private Laser ai;
-	//private Enemy enemy;
 	private Bullet aBullet;
 	private int upgrade = 0;
 	private int count = 0;
 	private int lastCount = 0;
-	private int count1;
-	private int count2;
 	private int tickSpawn=0;
+	private int bossTickSpawn=0;
 	private int lastTickSpawn=480;
 	boolean otk = false;
 	boolean start3 = true;
@@ -89,13 +88,24 @@ public class GameLogic {
 	}
 
 	public void logicUpdate() {
+		String time = "";
 		tickSpawn++;
 		if(this.countEnemy<4)
 			addNewAi();
+		if(this.killEnemy%4==0&&this.killEnemy!=0) {
+			if(this.bossTickSpawn>=180) {
+				bossSpawn();
+				this.bossTickSpawn=180;
+				time="";
+			}
+			else {
+				this.bossTickSpawn++;
+				time = (3-this.bossTickSpawn/60)+"";
+			}
+		}
 		RenderableHolder.getInstance().update();
 		checkEntityDead();
 		itemSpawn();
-		bossSpawn();
 		if(!bossOnce)
 			phaseBoss();
 		secretKey();
@@ -103,11 +113,101 @@ public class GameLogic {
 		ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
 		enemyFire();
 		count++;
-		canvas.paintComponent();
+		canvas.paintComponent(time);
+		
 
 	}
+	private void secretKey() {
+		if (InputUtility.getKeyPressed(KeyCode.U) && count - lastCount > 50) {
+			System.out.println("x");
+			this.upgrade++;
+			lastCount = count;
+		}
+		if (InputUtility.getKeyPressed(KeyCode.O)) {
+			otk = true;
+		}
+		if (InputUtility.getKeyPressed(KeyCode.R)) {
+			tank = new Tank(380, 450);
+			addNewObject(tank);
+		}
+	}
+	
+	private void tankFire() {
+		if (tank.fire) {
+			aBullet = new Bullet(tank.getX() + 20, tank.getY() + 15, tank.direction, false);
+			for (int i = 0; i < upgrade; i++) {
+				aBullet.upgrade();
+			}
+			if (otk) {
+				aBullet.otk();
+			}
+			addNewObject(aBullet);
+		}
+	}
+	private void checkEntityDead() {
+		for (Entity e : gameObjectContainer) {
+			if (e.destroyed != true) {
+				e.update();
+			} else {
+				if (e instanceof Enemy) {
+					this.killEnemyForItem++;
+					this.killEnemy++;
+					enemys.remove(e);
+				}
+				this.graveYard.add(e);
+				// System.out.println(e);
+			}
+		}
+		for (Entity e : graveYard) {
+			removeObject(e);
+			if (this.enemys.contains(e)) {
+				this.enemys.remove(e);
+			}
 
-
+		}
+		this.graveYard.clear();
+	}
+	
+	
+	private void bossSpawn() {
+		if (killEnemy == 4 &&this.killEnemy!=0) {
+			if(this.bossDead) {
+			    boss = new Boss(355, 0,phaseBoss);
+			    addNewObject(boss);
+				this.bossDead=false;
+				this.bossTickSpawn=180;
+			}
+			if(boss.destroyed) {
+				this.phaseBoss++;
+				this.bossDead=true;
+				this.countEnemy=0;
+				this.killEnemy=0;
+				this.bossCount++;
+			}
+			
+		}
+	}
+	
+	private void itemSpawn() {
+		if(this.killEnemyForItem%2==0&&this.killEnemyForItem!=0) {
+			Item item = new Item();
+			addNewObject(item);
+			this.killEnemyForItem=0;
+		}
+	}
+  
+	private void enemyFire() {
+		for (Enemy enemy1 : enemys) {
+			if (enemy1.fire == false)
+				continue;
+			Random rand = new Random();
+			int randDirect = rand.nextInt(2);
+			if (randDirect == 1) {
+				Bullet aBullet = new Bullet(enemy1.getX() + 20, enemy1.getY() + 15, enemy1.direction, true);
+				addNewObject(aBullet);
+			}
+		}
+	}
 	private void phaseBoss() {
 		if (boss.phase1) {
 			if (boss.b1) {
@@ -120,8 +220,8 @@ public class GameLogic {
 			if (boss.b2) {
 				ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
 				boss.playerPos(tank.x, tank.y);
-				count1 = new Random().nextInt(8);
-				count2 = new Random().nextInt(8);
+				int count1 = new Random().nextInt(8);
+				int count2 = new Random().nextInt(8);
 				// System.out.println(count1);
 				if (boss.barrier) {
 					Barrier barrier = new Barrier(boss);
@@ -239,104 +339,4 @@ public class GameLogic {
 		}
 	}
 	
-	private void secretKey() {
-		if (InputUtility.getKeyPressed(KeyCode.U) && count - lastCount > 50) {
-			System.out.println("x");
-			this.upgrade++;
-			lastCount = count;
-		}
-		if (InputUtility.getKeyPressed(KeyCode.O)) {
-			otk = true;
-		}
-		if (InputUtility.getKeyPressed(KeyCode.R)) {
-			tank = new Tank(380, 450);
-			addNewObject(tank);
-		}
-	}
-	
-	private void tankFire() {
-		if (tank.fire) {
-			aBullet = new Bullet(tank.getX() + 20, tank.getY() + 15, tank.direction, false);
-			for (int i = 0; i < upgrade; i++) {
-				aBullet.upgrade();
-			}
-			if (otk) {
-				aBullet.otk();
-			}
-			addNewObject(aBullet);
-		}
-	}
-	private void checkEntityDead() {
-		for (Entity e : gameObjectContainer) {
-			if (e.destroyed != true) {
-				e.update();
-			} else {
-				if (e instanceof Enemy) {
-					this.killEnemyForItem++;
-					this.killEnemy++;
-					enemys.remove(e);
-				}
-				this.graveYard.add(e);
-				// System.out.println(e);
-			}
-		}
-		for (Entity e : graveYard) {
-			removeObject(e);
-			if (this.enemys.contains(e)) {
-				this.enemys.remove(e);
-			}
-
-		}
-		this.graveYard.clear();
-	}
-	
-	
-	private void bossSpawn() {
-	
-		if (killEnemy == 4 &&this.killEnemy!=0) {
-			if(bossOnce) {
-<<<<<<< HEAD
-				
-			    boss = new Boss(355, 0,phaseBoss);
-||||||| merged common ancestors
-			    boss = new Boss(355, 0,3);
-=======
-			    boss = new Boss(355, 0,phaseBoss);
->>>>>>> 147aec183cc167c2ccf5f604c319e3fed8d11919
-				addNewObject(boss);
-				bossOnce=false;
-				this.bossDead=false;
-			}
-			if(boss.destroyed) {
-				this.phaseBoss++;
-				this.bossDead=true;
-				this.countEnemy=0;
-				this.bossOnce=true;
-				this.killEnemy=0;
-				this.bossCount++;
-			}
-			
-		}
-	}
-	
-	private void itemSpawn() {
-		if(this.killEnemyForItem%2==0&&this.killEnemyForItem!=0) {
-			Item item = new Item();
-			addNewObject(item);
-			this.killEnemyForItem=0;
-		}
-	}
-	
-	private void enemyFire() {
-		for (Enemy enemy1 : enemys) {
-			if (enemy1.fire == false)
-				continue;
-			Random rand = new Random();
-			int randDirect = rand.nextInt(2);
-			if (randDirect == 1) {
-				Bullet aBullet = new Bullet(enemy1.getX() + 20, enemy1.getY() + 15, enemy1.direction, true);
-				addNewObject(aBullet);
-			}
-		}
-	}
 }

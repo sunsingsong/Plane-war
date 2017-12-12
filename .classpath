@@ -3,6 +3,5 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry excluding="res/" kind="src" path="MyGame/src"/>
 	<classpathentry kind="src" path="MyGame/res"/>
-	<classpathentry kind="src" path="MyGame/src/res"/>
 	<classpathentry kind="output" path="MyGame/bin"/>
 </classpath>
