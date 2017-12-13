@@ -7,8 +7,6 @@ import window.SceneManager;
 import java.util.Random;
 
 public class Bomb extends CollidableEntity {
-	private int bx;
-	private int by;
 	private int tick;
 	private int lastTick = 0;
 	private boolean increase;
@@ -19,8 +17,6 @@ public class Bomb extends CollidableEntity {
 	public Bomb(int x, int y,int hp) {
 		tick = -80;
 		this.radius=-20;
-		this.bx = x;
-		this.by = y;
 		this.x = new Random().nextInt(SceneManager.SCENE_WIDTH);
 		this.y = new Random().nextInt(SceneManager.SCENE_HEIGHT);
 		this.width = 5;
@@ -30,8 +26,6 @@ public class Bomb extends CollidableEntity {
 	
 	public Bomb(int x, int y,Boss boss) {
 		tick = -10;
-		this.bx = x;
-		this.by = y;
 		this.x = x;
 		this.y = y;
 		this.radius=-20;

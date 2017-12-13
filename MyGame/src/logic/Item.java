@@ -49,6 +49,7 @@ public class Item extends CollidableEntity{
 	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
+		gc.setGlobalAlpha(1);
 		gc.drawImage(this.image, x, y);
 	}
 

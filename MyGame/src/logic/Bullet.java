@@ -75,6 +75,7 @@ public class Bullet extends CollidableEntity {
 			// TODO Auto-generated method stub
 //			image = new Image("res/1.png");
 //			gc.drawImage(image, this.x, this.y);
+			gc.setGlobalAlpha(1);
 			switch(this.damage) {
 			case 1:
 				gc.setFill(Color.WHEAT);

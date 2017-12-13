@@ -8,9 +8,6 @@ import javafx.scene.shape.ArcType;
 import window.SceneManager;
 
 public class Laser extends CollidableEntity {
-	private int num = 0;
-	private int tick = 0;
-	private int lastTick = 0;
 	private int line;
 	private Laser l;
 	private Laser r;
@@ -20,7 +17,6 @@ public class Laser extends CollidableEntity {
 	private int playerY;
 	private double xPlus;
 	private double yPlus;
-	private boolean l1;
 	private double dx;
 	private double dy;
 	private int no;
@@ -40,9 +36,6 @@ public class Laser extends CollidableEntity {
 		if (line == 2) {
 			l = new Laser(x, y, 4, direction);
 		}
-		if(line==7) {
-
-		}
 	}
 	
 	public Laser(int x,int y,int line,int direction,int px,int py,int no) {
@@ -61,6 +54,15 @@ public class Laser extends CollidableEntity {
 	}
 
 	public void update() {
+		if(this.destroyed) {
+			if(line==3) {
+				this.l.destroyed=true;
+				this.r.destroyed=true;
+			}
+			if(line==2) {
+				this.l.destroyed=true;
+			}
+		}
 		if (this.x > SceneManager.SCENE_WIDTH || this.y > SceneManager.SCENE_HEIGHT || x < 0 || y < 0) {
 			this.destroyed = true;
 		}
@@ -270,6 +272,16 @@ public class Laser extends CollidableEntity {
 	public double getDy() {
 		return dy;
 	}
+
+	public Laser getL() {
+		return l;
+	}
+
+	public Laser getR() {
+		return r;
+	}
+	
+	
 	
 	
 

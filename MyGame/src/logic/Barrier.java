@@ -9,16 +9,13 @@ import window.SceneManager;
 public class Barrier extends CollidableEntity {
 	
 	private Boss boss;
-	private int mX;
-	private int mY;
 	private int tick=-10;
 	
 	public Barrier(Boss boss) {
 		this.boss=boss;
 		this.x=(SceneManager.SCENE_WIDTH/2-boss.width/2)-50;
 		this.y=(SceneManager.SCENE_HEIGHT/2-boss.height/2)-50;
-		this.mX=(SceneManager.SCENE_WIDTH/2-boss.width/2);
-		this.mY=(SceneManager.SCENE_HEIGHT/2-boss.height/2);
+
 	}
 	
 	public void update() {

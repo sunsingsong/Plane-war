@@ -13,8 +13,7 @@ import sharedObject.RenderableHolder;
 import window.SceneManager;
 
 public class Boss extends CollidableEntity {
-	private static final Font TEXT_FONT = new Font("Monospace", 80);
-	private static final Font SCORE_TIME_FONT = new Font("Monospace", 30);
+	private static final Font bossHp = new Font("Monospace", 30);
 	AudioClip damaged = new AudioClip(ClassLoader.getSystemResource("flashing1.wav").toString());
 	public int direction = 4;
 	private int hp = 15;
@@ -44,7 +43,6 @@ public class Boss extends CollidableEntity {
 	boolean b5;
 	boolean b6;
 	boolean b7;
-	boolean sp4;
 	boolean b8;
 	boolean bomb=false;
 
@@ -54,6 +52,7 @@ public class Boss extends CollidableEntity {
 	boolean sp2;
 	boolean phase3 = false;
 	boolean sp3;
+	boolean sp4;
 	boolean hit=false;
 
 	boolean flashing = false;
@@ -127,7 +126,7 @@ public class Boss extends CollidableEntity {
 			gc.setGlobalAlpha(0.5);
 			gc.setFill(Color.GHOSTWHITE);
 			gc.setTextAlign(TextAlignment.CENTER);
-			gc.setFont(SCORE_TIME_FONT);
+			gc.setFont(bossHp);
 			gc.fillText(""+this.hp, mX, mY);
 			gc.setGlobalAlpha(1.0);
 			gc.drawImage(this.image, this.x, this.y);

@@ -39,6 +39,7 @@ public class GameLogic {
 	private int phaseBoss=1;
 	public boolean isEnd = false;
 	AudioClip bossBackgound = new AudioClip(ClassLoader.getSystemResource("bossBackgound.wav").toString());
+	AudioClip botBackgound = new AudioClip(ClassLoader.getSystemResource("stage_ost.m4a").toString());
 	AudioClip shoot = new AudioClip(ClassLoader.getSystemResource("bullet_shot.wav").toString());
 	AudioClip shootE = new AudioClip(ClassLoader.getSystemResource("statistics_1.wav").toString());
 	AudioClip laser1 = new AudioClip(ClassLoader.getSystemResource("laser1.wav").toString());
@@ -59,6 +60,8 @@ public class GameLogic {
 		ai = new Laser(100, 100, 5, 2);
 		addNewObject(ai);
 		addNewAi();
+		botBackgound.play();
+		botBackgound.setCycleCount(3);
 		laser1.setVolume(0.5);
 		bomb1.setVolume(0.3);
 
@@ -110,18 +113,24 @@ public class GameLogic {
 			
 	}
 	public void logicUpdate() {
+		if(ai.destroyed) {
+			ai = new Laser(5, 5, 5, 2);
+			addNewObject(ai);
+		}
 		endGame();
 		String time = "";
 		tickSpawn++;
-		if(this.countEnemy<4)
+		if(this.countEnemy<4) {
 			addNewAi();
+			botBackgound.play();
+			botBackgound.setCycleCount(5);
+		}
 		time=waitBossSpawn();
 		RenderableHolder.getInstance().update();
 		checkEntityDead();
 		itemSpawn();
 		if(!bossDead)
 			phaseBoss();
-		
 		secretKey();
 		tankFire();
 		ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
@@ -134,6 +143,7 @@ public class GameLogic {
 	private String waitBossSpawn() {
 		if(this.killEnemy%4==0&&this.killEnemy!=0) {
 			if(this.bossTickSpawn>=180) {
+				botBackgound.stop();
 				bossSpawn();
 			}
 			else {
@@ -176,6 +186,10 @@ public class GameLogic {
 			if (e.destroyed != true) {
 				e.update();
 			} else {
+				if(e instanceof Laser) {
+					e.update();
+					this.graveYard.add(e);
+				}
 				if (e instanceof Enemy) {
 					this.killEnemyForItem++;
 					this.killEnemy++;
@@ -200,7 +214,7 @@ public class GameLogic {
 		if (killEnemy == 4 &&this.killEnemy!=0) {
 			if(this.bossDead) {
 				bossBackgound.play();
-				bossBackgound.setCycleCount(5);
+				bossBackgound.setCycleCount(3);
 			    boss = new Boss(355, 0,phaseBoss);
 			    addNewObject(boss);
 				this.bossDead=false;
@@ -260,39 +274,47 @@ public class GameLogic {
 					addNewObject(barrier);
 				}
 				if (count1 == 0 || count1 == 1 || count2 == 6 || count2 == 1) {
-					laser1.play();
+					//laser1.play();
 					Laser laser = new Laser(boss.getX() + (boss.width / 2), boss.getY() + boss.height, 3, 1);
 					addNewObject(laser);
+					addNewObject(laser.getL());
+					addNewObject(laser.getR());
 				}
 				if (count1 == 0 || count1 == 2 || count2 == 6 || count2 == 2) {
-					laser1.play();
+					//laser1.play();
 					Laser laser1 = new Laser(boss.getX() + (boss.width / 2), boss.getY(), 3, 0);
 					addNewObject(laser1);
+					addNewObject(laser1.getL());
+					addNewObject(laser1.getR());
 				}
 				if (count1 == 0 || count1 == 3 || count2 == 6 || count2 == 3) {
-					laser1.play();
+					//laser1.play();
 					Laser laser2 = new Laser(boss.getX() + (97), boss.getY() + 74, 2, 0);
 					addNewObject(laser2);
+					addNewObject(laser2.getL());
 				}
 				if (count1 == 0 || count1 == 4 || count2 == 6 || count2 == 4) {
-					laser1.play();
+					//laser1.play();
 					Laser laser3 = new Laser(boss.getX() + (97), boss.getY() + 27, 2, 1);
 					addNewObject(laser3);
+					addNewObject(laser3.getL());
 				}
 				if (count1 == 0 || count1 == 5 || count2 == 6 || count2 == 5) {
-					laser1.play();
+					//laser1.play();
 					Laser laser4 = new Laser(boss.getX() + (2), boss.getY() + 76, 2, 2);
 					addNewObject(laser4);
+					addNewObject(laser4.getL());
 				}
 				if (count1 == 0 || count1 == 6 || count2 == 6 || count2 == 6) {
-					laser1.play();
+					//laser1.play();
 					Laser laser5 = new Laser(boss.getX() + (2), boss.getY() + (26), 2, 3);
 					addNewObject(laser5);
+					addNewObject(laser5.getL());
 				}
 
 			}
 			if (boss.b3) {
-				ai.setDirection(3);
+				//ai.setDirection(3);
 				ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
 				if (boss.barrier) {
 					Barrier barrier = new Barrier(boss);
@@ -300,7 +322,7 @@ public class GameLogic {
 				}
 				Bomb bomb = new Bomb(boss.getX(), boss.getY(), boss.getHp());
 				addNewObject(bomb);
-				bomb1.play();
+				//bomb1.play(0.3);
 			}
 		}
 		if (boss.phase3) {

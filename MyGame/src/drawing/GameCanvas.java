@@ -15,10 +15,7 @@ import javafx.scene.input.KeyEvent;
 
 public class GameCanvas extends Canvas {
 	
-	private static final int FPS = 60;
-	private static final long LOOP_TIME = 1000000000 / FPS;
 	GraphicsContext gc = this.getGraphicsContext2D();
-	private boolean spawn;
 
 	public GameCanvas() {
 		this.setWidth(SceneManager.SCENE_WIDTH);
