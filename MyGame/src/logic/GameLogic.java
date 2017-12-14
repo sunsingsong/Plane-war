@@ -33,7 +33,7 @@ public class GameLogic {
 	boolean otk = false;
 	boolean start3 = true;
 	private int countEnemy = 0;
-	public static int killEnemy = 0;
+	public int killEnemy = 0;
 	public int killEnemyForItem=0;
 	private boolean bossOnce = true;
 	private boolean bossDead=true;
