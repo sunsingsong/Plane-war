@@ -71,7 +71,7 @@ public class GameLogic {
 	}
 
 	protected void addNewAi() {
-		if(this.tickSpawn>=this.lastTickSpawn&&this.killEnemy%4==0) {
+		if(this.tickSpawn>=600&&this.killEnemy%4==0) {
 			for (int i = 0; i < 4; i++) {
 				if(this.countEnemy>20) break;
 				Enemy enemy = new Enemy(200 + i * 40, 0 * i * 80);
@@ -83,7 +83,7 @@ public class GameLogic {
 				enemys.add(enemy);
 				this.countEnemy++;
 			}
-			this.lastTickSpawn+=600;
+			this.tickSpawn=0;
 		}
 		else if(this.tickSpawn==0) {
 			for (int i = 0; i < 4; i++) {
