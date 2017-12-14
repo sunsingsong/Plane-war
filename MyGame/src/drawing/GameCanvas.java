@@ -53,5 +53,12 @@ public class GameCanvas extends Canvas {
 	public void clearComponent() {
 		gc.restore();
 	}
+	public void paintPauseGame(boolean isPause) {
+		if(isPause)
+			gc.setFill(Color.WHITE);
+		else gc.setFill(Color.BLACK);
+		gc.setFont(new Font("tahoma",70));
+		gc.fillText("Paused", SceneManager.SCENE_WIDTH/2-100, SceneManager.SCENE_HEIGHT/2);
+	}
 	
 }

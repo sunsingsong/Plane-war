@@ -11,6 +11,7 @@ public class InputUtility {
 	public static boolean getKeyPressed(KeyCode keycode) {
 		return keyPressed.contains(keycode);
 	}
+	
 	public static void setKeyPressed(KeyCode keycode,boolean pressed) {
 		if(pressed){
 			if(!keyPressed.contains(keycode)){
@@ -19,7 +20,6 @@ public class InputUtility {
 		}else{
 			keyPressed.remove(keycode);
 		}
-		//System.out.println(keyPressed);
 	}
 	public static void clear() {
 		keyPressed.clear();

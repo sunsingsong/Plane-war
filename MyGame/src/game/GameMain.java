@@ -1,6 +1,7 @@
 package game;
 
 import drawing.GameCanvas;
+import input.InputUtility;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
@@ -10,10 +11,10 @@ import window.SceneManager;
 
 
 public class GameMain {
-	
+	public static boolean isPress = false;
 	private static GameCanvas canvas;
 	private static GameLogic logic;
-	
+	private static boolean isPause= false;
 	public static void newGame() {
 		// TODO fill code
 		canvas = new GameCanvas();
@@ -24,15 +25,14 @@ public class GameMain {
 			@Override
 			public void run() {
 				while(true) {
-					if (!logic.isEnd) {
+					if (!logic.isEnd()&&!logic.isPause) {
 						Platform.runLater(new Runnable() {
 							public void run() {
 								logic.logicUpdate();
 							}
-							
 						});
 					}
-					else {
+					else if(logic.isEnd()){
 						canvas.clearComponent();
 						break; 
 					}
@@ -44,20 +44,38 @@ public class GameMain {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					addEvent();
 				}
 				
 			}
 			
 		}) ;
 		game.start();
-		/*AnimationTimer animation = new AnimationTimer() {
-			public void handle(long now) {
-				if(!logic.isEnd)
-					logic.logicUpdate();
-				//canvas.paintComponent();
-			}
-		};
-		animation.start();*/
-		
 	}
+	  public static void addEvent() {
+		  if(InputUtility.getKeyPressed(KeyCode.ENTER)){
+				if(!isPress) {
+					if (logic.isPause) {
+						logic.botBackgound.play();
+						if(!logic.isBossDead())
+							logic.bossBackgound.play();
+						canvas.paintPauseGame(false);
+						logic.isPause = false;
+					}
+					else {
+						logic.botBackgound.stop();
+						logic.bossBackgound.stop();
+						canvas.paintPauseGame(true);
+						logic.isPause = true;
+					}
+				   isPress=true;
+				}
+			}
+			else  isPress=false;
+		  if(InputUtility.getKeyPressed(KeyCode.ESCAPE)) {
+			  logic.isTerminate=true;
+			  Platform.exit();
+		  }
+	  }
+	
 }

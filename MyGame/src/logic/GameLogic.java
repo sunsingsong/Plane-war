@@ -39,10 +39,11 @@ public class GameLogic {
 	private boolean bossDead=true;
 	private int bossCount=1;
 	private int phaseBoss=1;
-	public boolean isEnd = false;
+	public boolean end = false;
 	public boolean isTerminate = false;
-	AudioClip bossBackgound = new AudioClip(ClassLoader.getSystemResource("bossBackgound.wav").toString());
-	AudioClip botBackgound = new AudioClip(ClassLoader.getSystemResource("stage_ost.m4a").toString());
+	public boolean isPause = false;
+	public AudioClip bossBackgound = new AudioClip(ClassLoader.getSystemResource("bossBackgound.wav").toString());
+	public AudioClip botBackgound = new AudioClip(ClassLoader.getSystemResource("stage_ost.m4a").toString());
 	AudioClip shoot = new AudioClip(ClassLoader.getSystemResource("bullet_shot.wav").toString());
 	AudioClip shootE = new AudioClip(ClassLoader.getSystemResource("statistics_1.wav").toString());
 	AudioClip laser1 = new AudioClip(ClassLoader.getSystemResource("laser1.wav").toString());
@@ -106,7 +107,7 @@ public class GameLogic {
 	}
 	public void endGame() {
 		if(tank.getHp()==0) {
-			isEnd = true;
+			end = true;
 			this.laser1.stop();
 			this.botBackgound.stop();
 			this.bossBackgound.stop();
@@ -116,16 +117,11 @@ public class GameLogic {
 			SceneManager.gotoEndGame();
 		}
 		else if(this.phaseBoss==4) {
-			isEnd = true;
+			end = true;
+			
 			SceneManager.gotoWinnerGame();
 		}
-		if(InputUtility.getKeyPressed(KeyCode.ESCAPE)){
-				this.laser1.stop();
-				this.botBackgound.stop();
-				this.bossBackgound.stop();
-				isTerminate=true;
-				Platform.exit();
-		}
+		
 	}
 	public void logicUpdate() {
 		if(ai.destroyed) {
@@ -429,6 +425,12 @@ public class GameLogic {
 			}
 
 		}
+	}
+	public boolean isBossDead() {
+		return bossDead;
+	}
+	public boolean isEnd() {
+		return end;
 	}
 	
 }

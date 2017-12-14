@@ -1,5 +1,6 @@
 package game;
 
+import input.InputUtility;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
