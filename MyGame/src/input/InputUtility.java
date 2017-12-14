@@ -21,5 +21,8 @@ public class InputUtility {
 		}
 		//System.out.println(keyPressed);
 	}
+	public static void clear() {
+		keyPressed.clear();
+	}
 	
 }

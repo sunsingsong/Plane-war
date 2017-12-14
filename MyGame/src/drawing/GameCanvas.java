@@ -50,6 +50,8 @@ public class GameCanvas extends Canvas {
 		gc.setFont(new Font("tahoma",50));
 		gc.fillText(time, SceneManager.SCENE_WIDTH/2, SceneManager.SCENE_HEIGHT/2);
 	}
-	
+	public void clearComponent() {
+		gc.restore();
+	}
 	
 }
