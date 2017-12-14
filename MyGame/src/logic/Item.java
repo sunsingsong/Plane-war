@@ -12,7 +12,7 @@ import window.SceneManager;
 public class Item extends CollidableEntity{
 
 	public int itemTick=0;
-	AudioClip item_sound = new AudioClip(ClassLoader.getSystemResource("powerup_pick.wav").toString());
+	private AudioClip item_sound = new AudioClip(ClassLoader.getSystemResource("powerup_pick.wav").toString());
 
 	public Item() {
 		Random rand= new Random();

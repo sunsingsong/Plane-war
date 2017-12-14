@@ -105,36 +105,34 @@ public class Laser extends CollidableEntity {
 		if(line==6) {
 			this.dx+=xPlus;
 			this.dy+=yPlus;
-			//System.out.println(xPlus+"   "+yPlus);
 		}
 		if(line==5) {
 			int xx = new Random().nextInt(5);
 			int yy = new Random().nextInt(5);
-			//System.out.println(this.playerX+"   "+this.playerY);
 			if(this.x>=this.playerX) {
 				if(xx>1) {
-					this.x-=direction;
+					this.x-=2;
 				}else {
 					this.x+=1;
 				}
 			}
 			if(this.x<=this.playerX) {
 				if(xx>1) {
-					this.x+=direction;
+					this.x+=2;
 				}else {
 					this.x-=1;
 				}
 			}
 			if(this.y<=this.playerY) {
 				if(yy>1) {
-					this.y+=direction;
+					this.y+=2;
 				}else {
 					this.y-=1;
 				}
 			}
 			if(this.y>this.playerY) {
 				if(yy>1) {
-					this.y-=direction;
+					this.y-=2;
 				}else {
 					this.y+=1;
 				}

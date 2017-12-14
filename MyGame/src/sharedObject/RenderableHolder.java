@@ -16,9 +16,9 @@ public class RenderableHolder {
 	private IRenderable boss;
 	private Comparator<IRenderable> comparator;
 	
-	static {
-		loadResource();
-	}
+//	static {
+//		loadResource();
+//	}
 	
 	public RenderableHolder() {
 		entities = new ArrayList<IRenderable>();
@@ -33,11 +33,9 @@ public class RenderableHolder {
 		return instance;
 	}
 
-	public static void loadResource() {
-//		mapSprite = new Image(ClassLoader.getSystemResource("Map.png").toString());
-//		mineSprite = new Image(ClassLoader.getSystemResource("Mine.png").toString());
-//		explosionSound = new AudioClip(ClassLoader.getSystemResource("Explosion.wav").toString());
-	}
+//	public static void loadResource() {
+//		
+//	}
 	
 	public void add(IRenderable entity) {
 		entities.add(entity);

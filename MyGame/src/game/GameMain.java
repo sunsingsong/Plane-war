@@ -14,7 +14,7 @@ public class GameMain {
 	public static boolean isPress = false;
 	private static GameCanvas canvas;
 	private static GameLogic logic;
-	private static boolean isPause= false;
+	
 	public static void newGame() {
 		// TODO fill code
 		canvas = new GameCanvas();

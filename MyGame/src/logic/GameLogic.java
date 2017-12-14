@@ -33,9 +33,8 @@ public class GameLogic {
 	boolean otk = false;
 	boolean start3 = true;
 	private int countEnemy = 0;
-	public static int killEnemy = 0;
+	public int killEnemy = 0;
 	public int killEnemyForItem=0;
-	private boolean bossOnce = true;
 	private boolean bossDead=true;
 	private int bossCount=1;
 	private int phaseBoss=1;
@@ -44,12 +43,13 @@ public class GameLogic {
 	public boolean isPause = false;
 	public AudioClip bossBackgound = new AudioClip(ClassLoader.getSystemResource("bossBackgound.wav").toString());
 	public AudioClip botBackgound = new AudioClip(ClassLoader.getSystemResource("stage_ost.m4a").toString());
-	AudioClip shoot = new AudioClip(ClassLoader.getSystemResource("bullet_shot.wav").toString());
-	AudioClip shootE = new AudioClip(ClassLoader.getSystemResource("statistics_1.wav").toString());
-	AudioClip laser1 = new AudioClip(ClassLoader.getSystemResource("laser1.wav").toString());
-	AudioClip bomb1 = new AudioClip(ClassLoader.getSystemResource("bomb1.wav").toString());
-	AudioClip bomb2 = new AudioClip(ClassLoader.getSystemResource("bomb2.wav").toString());
-	AudioClip item_sound = new AudioClip(ClassLoader.getSystemResource("item.wav").toString());
+	private AudioClip shoot = new AudioClip(ClassLoader.getSystemResource("bullet_shot.wav").toString());
+	private AudioClip shootE = new AudioClip(ClassLoader.getSystemResource("statistics_1.wav").toString());
+	private AudioClip laser1 = new AudioClip(ClassLoader.getSystemResource("laser1.wav").toString());
+	private AudioClip bomb1 = new AudioClip(ClassLoader.getSystemResource("bomb1.wav").toString());
+	private AudioClip bomb2 = new AudioClip(ClassLoader.getSystemResource("bomb2.wav").toString());
+	private AudioClip item_sound = new AudioClip(ClassLoader.getSystemResource("item.wav").toString());
+	private AudioClip gameOver = new AudioClip(ClassLoader.getSystemResource("game_over.wav").toString());
 
 
 	public GameLogic(GameCanvas canvas) {
@@ -113,6 +113,7 @@ public class GameLogic {
 			this.bossBackgound.stop();
 			RenderableHolder.getInstance().clear();
 			this.gameObjectContainer.clear();
+			gameOver.play();
 			InputUtility.clear();
 			SceneManager.gotoEndGame();
 		}

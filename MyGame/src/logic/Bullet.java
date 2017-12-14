@@ -10,7 +10,6 @@ public class Bullet extends CollidableEntity {
 	 private final int BULLET_SPEED = 5;
 	    private int direction;
 	    private int damage;
-//	    private boolean upgrade = false;
 	    public boolean isEnemy;
 
 	    public Bullet(int x, int y, int direction,boolean isEnemy) {

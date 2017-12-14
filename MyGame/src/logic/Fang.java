@@ -10,12 +10,11 @@ import window.SceneManager;
 public class Fang extends CollidableEntity {
 
 	private int no;
-	boolean setup = false;
+	private boolean setup = false;
 	public boolean f1;
 	public boolean f2;
 	public boolean f3;
 	public boolean f4;
-	private int hp = 3;
 	private int direction;
 	private int speed;
 	private Boss boss;
@@ -184,6 +183,10 @@ public class Fang extends CollidableEntity {
 		gc.setGlobalAlpha(1);
 		gc.drawImage(this.image, this.x, this.y);
 
+	}
+	
+	public boolean isSetup() {
+		return setup;
 	}
 
 }

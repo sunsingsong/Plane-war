@@ -8,12 +8,14 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
 import window.SceneManager;
 
 public class EndGame extends Canvas{
 	    public  GraphicsContext gc;
+
 		public  EndGame() {
 			super(SceneManager.SCENE_WIDTH, SceneManager.SCENE_HEIGHT);
 			gc = this.getGraphicsContext2D();

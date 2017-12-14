@@ -16,12 +16,12 @@ public class Tank extends CollidableEntity {
 	public boolean fire = false;
 	private int hp;
 	private static final int speed = 4;
-	boolean flashing = false;
-	int flashCounter = 10;
-	int flashDurationCounter = 10;
+	private boolean flashing = false;
+	private int flashCounter = 10;
+	private int flashDurationCounter = 10;
 	private boolean isHpdecrese=true;
-	AudioClip hit1 = new AudioClip(ClassLoader.getSystemResource("bullet_hit_1.wav").toString());
-	AudioClip hit2 = new AudioClip(ClassLoader.getSystemResource("bullet_hit_2.wav").toString());
+	private AudioClip hit1 = new AudioClip(ClassLoader.getSystemResource("bullet_hit_1.wav").toString());
+	private AudioClip hit2 = new AudioClip(ClassLoader.getSystemResource("bullet_hit_2.wav").toString());
 
 
 	public Tank(int x, int y) {
@@ -134,7 +134,7 @@ public class Tank extends CollidableEntity {
 					this.decreaseHp();
 				}
 				if(i instanceof Boss) {
-					this.destroyed=true;	
+					this.hp=0;	
 				}
 				if(i instanceof Bomb) {
 					decreaseHp() ;
@@ -152,7 +152,7 @@ public class Tank extends CollidableEntity {
 			hit2.play();
 			this.destroyed=true;
 		}
-		if(fireTick%60==0) {
+		if(fireTick%120==0) {
 			isHpdecrese=true;
 		}
 	}
