@@ -14,7 +14,7 @@ import window.SceneManager;
 
 public class Boss extends CollidableEntity {
 	private static final Font bossHp = new Font("Monospace", 30);
-	AudioClip damaged = new AudioClip(ClassLoader.getSystemResource("flashing1.wav").toString());
+	private AudioClip damaged = new AudioClip(ClassLoader.getSystemResource("flashing1.wav").toString());
 	public int direction = 4;
 	private int hp = 15;
 	private int speed = 3;
@@ -24,56 +24,54 @@ public class Boss extends CollidableEntity {
 	private int playerY;
 	private int nx;
 	private int ny;
-	int mX = (SceneManager.SCENE_WIDTH / 2 - this.width / 2);
-	int mY = (SceneManager.SCENE_HEIGHT / 2 - this.height / 2);
+	private int mX = (SceneManager.SCENE_WIDTH / 2 - this.width / 2);
+	private int mY = (SceneManager.SCENE_HEIGHT / 2 - this.height / 2);
 	private int division=10;
 	private int bossImage=1;
 	private int lastBossImage;
-	private double i=0;
+	private double light=0;
 	private boolean vab=false;
 
-    boolean barrier = true;
-	boolean spawn = true;
-	boolean haveEnemy;
-	boolean checkEnemy;
-	boolean b1;
-	boolean b2;
-	boolean b3;
-	boolean b4;
-	boolean b5;
-	boolean b6;
-	boolean b7;
-	boolean b8;
-	boolean bomb=false;
+	public boolean barrier = true;	//boolean spawn = true;
+	private boolean haveEnemy;
+	private boolean checkEnemy;
+	public boolean b1;
+	public boolean b2;
+	public boolean b3;
+	public boolean b4;
+	public boolean b5;
+	public boolean b6;
+	public boolean b7;
+	public boolean b8;
+	public boolean bomb=false;
 
-	boolean phase1 = false;
-	boolean sp1;
-	boolean phase2 = false;
-	boolean sp2;
-	boolean phase3 = false;
-	boolean sp3;
-	boolean sp4;
-	boolean hit=false;
+	public boolean phase1 = false;
+	private boolean sp1;
+	public boolean phase2 = false;
+	private boolean sp2;
+	public boolean phase3 = false;
+	private boolean sp3;
+	private boolean sp4;
 
 	boolean flashing = false;
 	int flashCounter = 10;
 	int flashDurationCounter = 10;
 	
-	Fang fang1;
-	Fang fang2;
-	Fang fang3;
-	Fang fang4;
-	Fang fang5;
-	Fang fang6;
+	public Fang fang1;
+	public Fang fang2;
+	public Fang fang3;
+	public Fang fang4;
+	public Fang fang5;
+	public Fang fang6;
 	
-	boolean fangSet1=false;
-	boolean fangSet4=false;
+	public boolean fangSet1=false;
+	public boolean fangSet4=false;
 	
-	boolean fangSet2=false;
-	boolean fangSet6=false;
+	public boolean fangSet2=false;
+	public boolean fangSet6=false;
 	
-	boolean fangSet3=false;
-	boolean fangSet5=false;
+	public boolean fangSet3=false;
+	public boolean fangSet5=false;
 
 	public Boss(int x, int y,int phase) {
 		switch(phase) {
@@ -145,16 +143,16 @@ public class Boss extends CollidableEntity {
 			gc.setGlobalAlpha(1.0);
 			gc.drawImage(this.image, this.x, this.y);
 			if(!vab) {
-				gc.setGlobalAlpha(i);
-				i+=0.1;
-				if(i>=1.0)vab=true;
+				gc.setGlobalAlpha(light);
+				light+=0.1;
+				if(light>=1.0)vab=true;
 				gc.setFill(Color.WHITE);
 				gc.fillRect(0, 0,SceneManager.SCENE_WIDTH , SceneManager.SCENE_HEIGHT);
 			}else {
 				this.setImage(new Image("boss5.png"));
-				if(i>0) {
-					i-=0.1;
-					gc.setGlobalAlpha(i);
+				if(light>0) {
+					light-=0.1;
+					gc.setGlobalAlpha(light);
 					gc.setFill(Color.WHITE);
 					gc.fillRect(0, 0,SceneManager.SCENE_WIDTH , SceneManager.SCENE_HEIGHT);
 				}
@@ -472,21 +470,21 @@ public class Boss extends CollidableEntity {
 			//SceneManager.gotoSceneOf(victory);
 		}
 		if(fangSet1) {
-			if(fang1.setup) {
+			if(fang1.isSetup()) {
 				//b5=true;
 				fangSet1=false;
 				tick=1;
 			}
 		}
 		if(fangSet4) {
-			if(fang4.setup) {
+			if(fang4.isSetup()) {
 				//b5=true;
 				fangSet4=false;
 				tick=1;
 			}
 		}
 		if(fangSet2) {
-			if(fang2.setup) {
+			if(fang2.isSetup()) {
 				//b6=true;
 				fangSet2=false;
 				tick=1;
@@ -494,21 +492,21 @@ public class Boss extends CollidableEntity {
 			}
 		}
 		if(fangSet6) {
-			if(fang6.setup) {
+			if(fang6.isSetup()) {
 				//b6=true;
 				fangSet6=false;
 				tick=1;
 			}
 		}
 		if(fangSet3) {
-			if(fang3.setup) {
+			if(fang3.isSetup()) {
 				//b6=true;
 				fangSet3=false;
 				tick=1;
 			}
 		}
 		if(fangSet5) {
-			if(fang5.setup) {
+			if(fang5.isSetup()) {
 				//b6=true;
 				fangSet5=false;
 				tick=1;

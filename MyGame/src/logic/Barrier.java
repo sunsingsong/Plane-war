@@ -49,4 +49,6 @@ public class Barrier extends CollidableEntity {
 		
 	}
 	
+	
+	
 }

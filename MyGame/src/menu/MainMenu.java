@@ -6,6 +6,7 @@ import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.Toolkit;
 
 import game.GameMain;
+import input.InputUtility;
 import javafx.application.Platform;
 import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
@@ -33,9 +34,10 @@ public class MainMenu extends Canvas {
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setFont(MENU_FONT);
 		FontLoader fontLoader = Toolkit.getToolkit().getFontLoader();
-		double font_width = fontLoader.computeStringWidth("This is a filled Text", gc.getFont());
+		//double font_width = fontLoader.computeStringWidth("This is a filled Text", gc.getFont());
 		gc.fillText("PLANE WAR", (SceneManager.SCENE_WIDTH) /2, SceneManager.SCENE_HEIGHT /2);
-		
+		gc.setFont(new Font(20));
+		gc.fillText("Press Enter to Start Game", (SceneManager.SCENE_WIDTH) /2, SceneManager.SCENE_HEIGHT /2+150);
 		this.addKeyEventHandler();
 	}
 	
@@ -49,5 +51,6 @@ public class MainMenu extends Canvas {
 				GameMain.newGame();
 			}
 		});
+
 	}
 }

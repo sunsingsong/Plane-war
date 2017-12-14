@@ -35,15 +35,14 @@ public class GameLogic {
 	private int countEnemy = 0;
 	public int killEnemy = 0;
 	public int killEnemyForItem=0;
-	private boolean bossOnce = true;
 	private boolean bossDead=true;
 	private int bossCount=1;
 	private int phaseBoss=1;
 	public boolean end = false;
 	public boolean isTerminate = false;
 	public boolean isPause = false;
-	public AudioClip bossBackgound = new AudioClip(ClassLoader.getSystemResource("bossBackgound.wav").toString());
-	public AudioClip botBackgound = new AudioClip(ClassLoader.getSystemResource("stage_ost.m4a").toString());
+	public AudioClip bossBackground = new AudioClip(ClassLoader.getSystemResource("bossBackgound.wav").toString());
+	public AudioClip botBackground = new AudioClip(ClassLoader.getSystemResource("stage_ost.m4a").toString());
 	AudioClip shoot = new AudioClip(ClassLoader.getSystemResource("bullet_shot.wav").toString());
 	AudioClip shootE = new AudioClip(ClassLoader.getSystemResource("statistics_1.wav").toString());
 	AudioClip laser1 = new AudioClip(ClassLoader.getSystemResource("laser1.wav").toString());
@@ -64,17 +63,17 @@ public class GameLogic {
 		ai = new Laser(100, 100, 5, 2);
 		addNewObject(ai);
 		addNewAi();
-		botBackgound.play();
-		botBackgound.setCycleCount(3);
+		botBackground.play();
+		//botBackground.setCycleCount(3);
 		laser1.setVolume(0.5);
 		bomb1.setVolume(0.3);
 
 	}
 
 	protected void addNewAi() {
-		if(this.tickSpawn>=this.lastTickSpawn) {
+		if(this.tickSpawn>=this.lastTickSpawn&&this.killEnemy==4) {
 			for (int i = 0; i < 4; i++) {
-				if(this.countEnemy>4) break;
+				if(this.countEnemy>20) break;
 				Enemy enemy = new Enemy(200 + i * 40, 0 * i * 80);
 				if(this.bossDead) {
 					enemy.levelEnemy=this.bossCount;
@@ -84,7 +83,7 @@ public class GameLogic {
 				enemys.add(enemy);
 				this.countEnemy++;
 			}
-			this.lastTickSpawn+=480;
+			this.lastTickSpawn+=600;
 		}
 		else if(this.tickSpawn==0) {
 			for (int i = 0; i < 4; i++) {
@@ -109,8 +108,8 @@ public class GameLogic {
 		if(tank.getHp()==0) {
 			end = true;
 			this.laser1.stop();
-			this.botBackgound.stop();
-			this.bossBackgound.stop();
+			this.botBackground.stop();
+			this.bossBackground.stop();
 			RenderableHolder.getInstance().clear();
 			this.gameObjectContainer.clear();
 			InputUtility.clear();
@@ -118,7 +117,6 @@ public class GameLogic {
 		}
 		else if(this.phaseBoss==4) {
 			end = true;
-			
 			SceneManager.gotoWinnerGame();
 		}
 		
@@ -131,10 +129,10 @@ public class GameLogic {
 		endGame();
 		String time = "";
 		tickSpawn++;
-		if(this.countEnemy<4) {
+		if(this.countEnemy<20) {
 			addNewAi();
-			botBackgound.play();
-			botBackgound.setCycleCount(5);
+			botBackground.play();
+			botBackground.setCycleCount(5);
 		}
 		time=waitBossSpawn();
 		RenderableHolder.getInstance().update();
@@ -148,13 +146,11 @@ public class GameLogic {
 		enemyFire();
 		count++;
 		canvas.paintComponent(time);
-		//endGame();
-
 	}
 	private String waitBossSpawn() {
-		if(this.killEnemy%4==0&&this.killEnemy!=0) {
+		if(this.killEnemy%20==0&&this.killEnemy!=0) {
 			if(this.bossTickSpawn>=180) {
-				botBackgound.stop();
+				botBackground.stop();
 				bossSpawn();
 			}
 			else {
@@ -222,17 +218,18 @@ public class GameLogic {
 	
 	
 	private void bossSpawn() {
-		if (killEnemy == 4 &&this.killEnemy!=0) {
+		if (killEnemy == 20 &&this.killEnemy!=0) {
 			if(this.bossDead) {
-				bossBackgound.play();
-				bossBackgound.setCycleCount(3);
+				bossBackground.play();
+				bossBackground.setVolume(3);
+				bossBackground.setCycleCount(3);
 			    boss = new Boss(355, 0,phaseBoss);
 			    addNewObject(boss);
 				this.bossDead=false;
 				this.bossTickSpawn=180;
 			}
 			if(boss.destroyed) {
-				bossBackgound.stop();
+				bossBackground.stop();
 				this.phaseBoss++;
 				this.bossDead=true;
 				this.countEnemy=0;

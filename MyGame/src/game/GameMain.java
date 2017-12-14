@@ -14,7 +14,7 @@ public class GameMain {
 	public static boolean isPress = false;
 	private static GameCanvas canvas;
 	private static GameLogic logic;
-	private static boolean isPause= false;
+	
 	public static void newGame() {
 		// TODO fill code
 		canvas = new GameCanvas();
@@ -56,15 +56,15 @@ public class GameMain {
 		  if(InputUtility.getKeyPressed(KeyCode.ENTER)){
 				if(!isPress) {
 					if (logic.isPause) {
-						logic.botBackgound.play();
+						logic.botBackground.play();
 						if(!logic.isBossDead())
-							logic.bossBackgound.play();
+							logic.bossBackground.play();
 						canvas.paintPauseGame(false);
 						logic.isPause = false;
 					}
 					else {
-						logic.botBackgound.stop();
-						logic.bossBackgound.stop();
+						logic.botBackground.stop();
+						logic.bossBackground.stop();
 						canvas.paintPauseGame(true);
 						logic.isPause = true;
 					}
