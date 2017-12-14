@@ -71,7 +71,7 @@ public class GameLogic {
 	}
 
 	protected void addNewAi() {
-		if(this.tickSpawn>=this.lastTickSpawn&&this.killEnemy==4) {
+		if(this.tickSpawn>=this.lastTickSpawn&&this.killEnemy%4==0) {
 			for (int i = 0; i < 4; i++) {
 				if(this.countEnemy>20) break;
 				Enemy enemy = new Enemy(200 + i * 40, 0 * i * 80);
@@ -131,8 +131,6 @@ public class GameLogic {
 		tickSpawn++;
 		if(this.countEnemy<20) {
 			addNewAi();
-			botBackground.play();
-			botBackground.setCycleCount(5);
 		}
 		time=waitBossSpawn();
 		RenderableHolder.getInstance().update();
@@ -148,7 +146,7 @@ public class GameLogic {
 		canvas.paintComponent(time);
 	}
 	private String waitBossSpawn() {
-		if(this.killEnemy%20==0&&this.killEnemy!=0) {
+		if(this.killEnemy==20&&this.killEnemy!=0) {
 			if(this.bossTickSpawn>=180) {
 				botBackground.stop();
 				bossSpawn();
@@ -230,6 +228,8 @@ public class GameLogic {
 			}
 			if(boss.destroyed) {
 				bossBackground.stop();
+				botBackground.play();
+				botBackground.setCycleCount(5);
 				this.phaseBoss++;
 				this.bossDead=true;
 				this.countEnemy=0;
