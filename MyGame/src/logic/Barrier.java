@@ -25,8 +25,8 @@ public class Barrier extends CollidableEntity {
 					if (i instanceof Bullet) {
 						((Bullet) i).destroyed = true;
 					}
-					if(i instanceof Tank) {
-						((Tank)i).destroyed=true;	
+					if(i instanceof Plane) {
+						((Plane)i).destroyed=true;	
 					}
 				}
 			}

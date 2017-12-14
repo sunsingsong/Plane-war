@@ -10,6 +10,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import window.SceneManager;
 
@@ -21,9 +22,11 @@ public class EndGame extends Canvas{
 			gc = this.getGraphicsContext2D();
 			gc.fillRect(0, 0,1000, 1000);
 			gc.setFill(Color.CORNFLOWERBLUE);
+			gc.setFont(new Font("Cooper Black", 100));
 			gc.setTextAlign(TextAlignment.CENTER);
-			gc.fillText("GAME OVER",SceneManager.SCENE_WIDTH/2, SceneManager.SCENE_HEIGHT/2);
-			gc.fillText("Try Again?",SceneManager.SCENE_WIDTH/2, SceneManager.SCENE_HEIGHT/2+200);
+			gc.fillText("GAME OVER",SceneManager.SCENE_WIDTH/2, SceneManager.SCENE_HEIGHT/2-50);
+			gc.setFont(new Font("Cooper Black", 50));
+			gc.fillText("Try Again?",SceneManager.SCENE_WIDTH/2, SceneManager.SCENE_HEIGHT/2+150);
 			addKeyEventHandler();
 			
 		}

@@ -20,7 +20,7 @@ public class GameLogic {
 	private List<Entity> graveYard;
 	private List<Enemy> enemys;
 	private GameCanvas canvas;
-	private Tank tank;
+	private Plane plane;
 	private Boss boss;
 	private Laser ai;
 	private Bullet aBullet;
@@ -30,8 +30,8 @@ public class GameLogic {
 	private int tickSpawn=0;
 	private int bossTickSpawn=0;
 	private int lastTickSpawn=480;
-	boolean otk = false;
-	boolean start3 = true;
+	private boolean otk = false;
+	private boolean start3 = true;
 	private int countEnemy = 0;
 	public int killEnemy = 0;
 	public int killEnemyForItem=0;
@@ -43,12 +43,14 @@ public class GameLogic {
 	public boolean isPause = false;
 	public AudioClip bossBackground = new AudioClip(ClassLoader.getSystemResource("bossBackgound.wav").toString());
 	public AudioClip botBackground = new AudioClip(ClassLoader.getSystemResource("stage_ost.m4a").toString());
-	AudioClip shoot = new AudioClip(ClassLoader.getSystemResource("bullet_shot.wav").toString());
-	AudioClip shootE = new AudioClip(ClassLoader.getSystemResource("statistics_1.wav").toString());
-	AudioClip laser1 = new AudioClip(ClassLoader.getSystemResource("laser1.wav").toString());
-	AudioClip bomb1 = new AudioClip(ClassLoader.getSystemResource("bomb1.wav").toString());
-	AudioClip bomb2 = new AudioClip(ClassLoader.getSystemResource("bomb2.wav").toString());
-	AudioClip item_sound = new AudioClip(ClassLoader.getSystemResource("item.wav").toString());
+	private AudioClip shoot = new AudioClip(ClassLoader.getSystemResource("bullet_shot.wav").toString());
+	private AudioClip shootE = new AudioClip(ClassLoader.getSystemResource("statistics_1.wav").toString());
+	private AudioClip laser1 = new AudioClip(ClassLoader.getSystemResource("laser1.wav").toString());
+	private AudioClip bomb1 = new AudioClip(ClassLoader.getSystemResource("bomb1.wav").toString());
+	private AudioClip bomb2 = new AudioClip(ClassLoader.getSystemResource("bomb2.wav").toString());
+	private AudioClip item_sound = new AudioClip(ClassLoader.getSystemResource("item.wav").toString());
+	private AudioClip gameOver = new AudioClip(ClassLoader.getSystemResource("game_over.wav").toString());
+	private AudioClip victory = new AudioClip(ClassLoader.getSystemResource("victory.wav").toString());
 
 
 	public GameLogic(GameCanvas canvas) {
@@ -56,8 +58,8 @@ public class GameLogic {
 		this.graveYard = new ArrayList<Entity>();
 		this.enemys = new ArrayList<Enemy>();
 		this.canvas = canvas;
-		tank = new Tank(380, 300);
-		addNewObject(tank);
+		plane = new Plane(380, 300);
+		addNewObject(plane);
 		// boss = new Boss(355, 0);
 		// addNewObject(boss);
 		ai = new Laser(100, 100, 5, 2);
@@ -105,18 +107,20 @@ public class GameLogic {
 		RenderableHolder.getInstance().remove(entity);
 	}
 	public void endGame() {
-		if(tank.getHp()==0) {
+		if(plane.getHp()==0) {
 			end = true;
 			this.laser1.stop();
 			this.botBackground.stop();
 			this.bossBackground.stop();
 			RenderableHolder.getInstance().clear();
 			this.gameObjectContainer.clear();
+			gameOver.play();
 			InputUtility.clear();
 			SceneManager.gotoEndGame();
 		}
 		else if(this.phaseBoss==4) {
 			end = true;
+			victory.play();
 			SceneManager.gotoWinnerGame();
 		}
 		
@@ -139,8 +143,8 @@ public class GameLogic {
 		if(!bossDead)
 			phaseBoss();
 		secretKey();
-		tankFire();
-		ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
+		planeFire();
+		ai.playerPos(plane.x + plane.width / 2, plane.y + plane.height / 2);
 		enemyFire();
 		count++;
 		canvas.paintComponent(time);
@@ -168,14 +172,14 @@ public class GameLogic {
 			otk = true;
 		}
 		if (InputUtility.getKeyPressed(KeyCode.R)) {
-			tank = new Tank(380, 450);
-			addNewObject(tank);
+			plane = new Plane(380, 450);
+			addNewObject(plane);
 		}
 	}
 	
-	private void tankFire() {
-		if (tank.fire) {
-			aBullet = new Bullet(tank.getX() + 20, tank.getY() + 15, tank.direction, false);
+	private void planeFire() {
+		if (plane.fire) {
+			aBullet = new Bullet(plane.getX() + 20, plane.getY() + 15, plane.direction, false);
 			shoot.play();
 			for (int i = 0; i < upgrade; i++) {
 				aBullet.upgrade();
@@ -265,15 +269,15 @@ public class GameLogic {
 	private void phaseBoss() {
 		if (boss.phase1) {
 			if (boss.b1) {
-				ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
+				ai.playerPos(plane.x + plane.width / 2, plane.y + plane.height / 2);
 				Bullet aBullet = new Bullet(boss.getX() + boss.width, boss.getY() + boss.height, boss.direction, true);
 				addNewObject(aBullet);
 			}
 		}
 		if (boss.phase2) {
 			if (boss.b2) {
-				ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
-				boss.playerPos(tank.x, tank.y);
+				ai.playerPos(plane.x + plane.width / 2, plane.y + plane.height / 2);
+				boss.playerPos(plane.x, plane.y);
 				int count1 = new Random().nextInt(8);
 				int count2 = new Random().nextInt(8);
 				// System.out.println(count1);
@@ -323,7 +327,7 @@ public class GameLogic {
 			}
 			if (boss.b3) {
 				//ai.setDirection(3);
-				ai.playerPos(tank.x + tank.width / 2, tank.y + tank.height / 2);
+				ai.playerPos(plane.x + plane.width / 2, plane.y + plane.height / 2);
 				if (boss.barrier) {
 					Barrier barrier = new Barrier(boss);
 					addNewObject(barrier);
@@ -363,11 +367,11 @@ public class GameLogic {
 			}
 			
 			if(boss.b5) {
-				Laser l1 = new Laser(boss.fang1.x+20, boss.fang1.y+20, 6, 10, tank.x+20, tank.y+15,1);
+				Laser l1 = new Laser(boss.fang1.x+20, boss.fang1.y+20, 6, 10, plane.x+20, plane.y+15,1);
 				addNewObject(l1);
 				laser1.play();
 				
-				Laser l4 = new Laser(boss.fang4.x+20, boss.fang4.y+20, 6, 10, tank.x+20, tank.y+15,4);
+				Laser l4 = new Laser(boss.fang4.x+20, boss.fang4.y+20, 6, 10, plane.x+20, plane.y+15,4);
 				addNewObject(l4);
 				laser1.play();
 				

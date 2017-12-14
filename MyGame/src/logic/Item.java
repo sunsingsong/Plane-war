@@ -34,11 +34,11 @@ public class Item extends CollidableEntity{
 			for (IRenderable i : RenderableHolder.getInstance().getEntities()) {
 				if (this.collideWith((CollidableEntity) i)) {
 					//System.out.println(this.x+"    "+this.y);
-					if (i instanceof Tank) {
+					if (i instanceof Plane) {
 						item_sound.play();
 						this.destroyed = true;
 						this.itemTick=0;
-						((Tank) i).increaseHp();
+						((Plane) i).increaseHp();
 					}
 				}
 			}

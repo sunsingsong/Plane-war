@@ -6,7 +6,7 @@ public abstract class CollidableEntity extends Entity {
 
 	protected boolean collideWith(CollidableEntity other) {
 		this.result=true;
-		if (this instanceof Tank) {
+		if (this instanceof Plane) {
 			if (other instanceof Bullet) {
 				for (int i = 0; i < 6; i++) {
 					result = result&& Math.hypot(this.x + (20) - (other.x + i), this.y + (15) - (other.y + i)) <= this.radius;
@@ -56,12 +56,12 @@ public abstract class CollidableEntity extends Entity {
 			return result;
 		}
 
-		if(this instanceof Item && other instanceof Tank) {
+		if(this instanceof Item && other instanceof Plane) {
 			return Math.hypot(this.x+12-(other.x+20),this.y+12-(other.y+15)) <= other.radius + 12;
 		}
 
 		if(this instanceof Item) {
-			if(other instanceof Tank) {
+			if(other instanceof Plane) {
 				//System.out.println("ssssasd");
 				//System.out.println((this.x)+"      "+(other.x+20)+"     "+(this.y)+"     "+(other.y+15));
 				return Math.hypot(this.x+12-(other.x+20),this.y+12-(other.y+15)) <= other.radius + 12;
@@ -77,7 +77,7 @@ public abstract class CollidableEntity extends Entity {
 				
 				return (other.x+other.width>=this.x&&other.x<=this.x+200&&other.y+other.height>=this.y&&other.y<=this.y+200);
 			}
-			if(other instanceof Tank) {
+			if(other instanceof Plane) {
 				return (other.x+(other.width/2)>=this.x&&other.x+(other.width/2)<=this.x+200&&other.y+(other.height/2)>=this.y&&other.y+(other.height/2)<=this.y+200);
 			}
 		}
