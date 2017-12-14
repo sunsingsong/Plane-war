@@ -10,8 +10,8 @@ import sharedObject.RenderableHolder;
 import window.SceneManager;
 
 public class Tank extends CollidableEntity {
-	private int tick=0;
-	private int lastTick=0;
+	private int fireTick=0;
+	private int lastFireTick=0;
 	public int direction =0;
 	public boolean fire = false;
 	private int hp;
@@ -56,8 +56,8 @@ public class Tank extends CollidableEntity {
 		checkPlaneDead();
 		this.fire = false;
 		addInput();
-			tick++;
-		}
+		fireTick++;
+	}
 
 	public void addInput() {
 		if (InputUtility.getKeyPressed(KeyCode.LEFT)) {
@@ -82,10 +82,10 @@ public class Tank extends CollidableEntity {
 		}
 		
 		if (InputUtility.getKeyPressed(KeyCode.SPACE)) {
-			if(tick>=lastTick) {
-				tick=lastTick;
+			if(fireTick>=lastFireTick) {
+				fireTick=lastFireTick;
 				this.fire = true;
-				lastTick+=50;
+				lastFireTick+=50;
 			}
 		}
 	}
@@ -152,7 +152,7 @@ public class Tank extends CollidableEntity {
 			hit2.play();
 			this.destroyed=true;
 		}
-		if(tick%60==0) {
+		if(fireTick%60==0) {
 			isHpdecrese=true;
 		}
 	}

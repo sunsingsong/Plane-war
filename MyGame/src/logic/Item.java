@@ -10,7 +10,7 @@ import sharedObject.RenderableHolder;
 import window.SceneManager;
 
 public class Item extends CollidableEntity{
-	public int itemType;
+
 	public int itemTick=0;
 	AudioClip item_sound = new AudioClip(ClassLoader.getSystemResource("powerup_pick.wav").toString());
 
@@ -18,14 +18,12 @@ public class Item extends CollidableEntity{
 		Random rand= new Random();
 		this.x=rand.nextInt(SceneManager.SCENE_WIDTH-12);
 		this.y=rand.nextInt(SceneManager.SCENE_HEIGHT-12);
-		randomItem();
 		this.setImage(new Image("Armor.png"));
 	}
-	private void randomItem() {
-		Random rand= new Random();
-		this.itemType=rand.nextInt(2);
-	}
 	public void update() {
+		checkGetItem();
+	}
+	private void checkGetItem() {
 		this.itemTick++;
 		if(this.itemTick>=600) { 
 			  this.destroyed=true;
@@ -46,7 +44,6 @@ public class Item extends CollidableEntity{
 			}
 		}
 	}
-	@Override
 	public void draw(GraphicsContext gc) {
 		// TODO Auto-generated method stub
 		gc.setGlobalAlpha(1);

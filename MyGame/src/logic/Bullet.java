@@ -19,62 +19,47 @@ public class Bullet extends CollidableEntity {
 	        this.y=y;
 	        this.direction = direction;
 	        this.isEnemy=isEnemy;
-	       /* if (direction == 0) {
-	            loadImage("image/bullet_up.png");
-	        }
-	        if (direction == 1) {
-	            loadImage("image/bullet_right.png");
-	        }
-	        if (direction == 2) {
-	            loadImage("image/bullet_down.png");
-	        }
-	        if (direction == 3) {
-	            loadImage("image/bullet_left.png");
-	        }*/
-	        //isEnemy = Enemy;
-	        //getImageDimensions();
 	    }
 	    public void update() {
-	        if (direction == 0) {
-	            y -= BULLET_SPEED;
-	        } else if (direction == 1||this.direction==4) {
-	            y += BULLET_SPEED;
-	        } else if (direction == 2) {
-	            x -= BULLET_SPEED;
-	        } else if (direction == 3) {
-	             x+= BULLET_SPEED;
-	        }
-	        if (x > SceneManager.SCENE_WIDTH + 100 + width) {
-	        	visible = false;
-	        	destroyed=true;
-	        }
-	        if (x < -width - 100) {
-	        	visible = false;
-	        	destroyed=true;
-	        }
-	        if (y > SceneManager.SCENE_HEIGHT + height + 100) {
-	        	visible = false;
-	        	destroyed=true;
-	        }
-	        if (y < height - 100) {
-	        	visible = false;
-	        	destroyed=true;
-	        }
+	    		setDirection();
+	    		checkBulletDestroy();
 	    }
 	    public void upgrade() {
-	    	if(this.damage<4) {
+	    	if(this.damage<4) 
 	    		 this.damage++;
-	    	}
-	    }
+	    	 }
+	    private void setDirection() {
+		if (direction == 0) {
+			y -= BULLET_SPEED;
+		} else if (direction == 1 || this.direction == 4) {
+			y += BULLET_SPEED;
+		} else if (direction == 2) {
+			x -= BULLET_SPEED;
+		} else if (direction == 3) {
+			x += BULLET_SPEED;
+		}
+	}
 
-//	    public boolean getUpgrade() {
-//	        return this.upgrade;
-//	    }
+	private void checkBulletDestroy() {
+		if (x > SceneManager.SCENE_WIDTH + 100 + width) {
+			visible = false;
+			destroyed = true;
+		}
+		if (x < -width - 100) {
+			visible = false;
+			destroyed = true;
+		}
+		if (y > SceneManager.SCENE_HEIGHT + height + 100) {
+			visible = false;
+			destroyed = true;
+		}
+		if (y < height - 100) {
+			visible = false;
+			destroyed = true;
+		}
+	}
 		@Override
 		public void draw(GraphicsContext gc) {
-			// TODO Auto-generated method stub
-//			image = new Image("res/1.png");
-//			gc.drawImage(image, this.x, this.y);
 			gc.setGlobalAlpha(1);
 			switch(this.damage) {
 			case 1:
