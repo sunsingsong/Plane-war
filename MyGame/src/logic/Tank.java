@@ -1,13 +1,10 @@
 package logic;
 
-import game.EndGame;
 import input.InputUtility;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.AudioClip;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.ArcType;
 import sharedObject.IRenderable;
 import sharedObject.RenderableHolder;
 import window.SceneManager;
@@ -19,7 +16,6 @@ public class Tank extends CollidableEntity {
 	public boolean fire = false;
 	private int hp;
 	private static final int speed = 4;
-	private int angle = 0; // angle 0 = EAST
 	boolean flashing = false;
 	int flashCounter = 10;
 	int flashDurationCounter = 10;
@@ -57,52 +53,13 @@ public class Tank extends CollidableEntity {
 
 	public void update() {
 		flashState();
-		for(IRenderable i:RenderableHolder.getInstance().getEntities()) {
-			if(this.collideWith((CollidableEntity)i)){
-				if((i instanceof Bullet)&&(((Bullet)i).isEnemy)){	
-					((Bullet)i).destroyed=true;
-					this.decreaseHp();
-				}
-				if(i instanceof Boss) {
-					this.destroyed=true;	
-				}
-				if(i instanceof Bomb) {
-					decreaseHp() ;
-				}
-				if(i instanceof Laser) {
-					((Laser)i).destroyed=true;
-					decreaseHp() ;
-				}
-				if(i instanceof Enemy) {
-					decreaseHp() ;
-				}
-			}
-		}
-		if(this.hp==0) {
-			hit2.play();
-			this.destroyed=true;
-		}
-		if(tick%60==0) {
-			isHpdecrese=true;
-		}
+		checkPlaneDead();
 		this.fire = false;
-		if (flashing) {
-			if (flashCounter == 0) {
-				flashDurationCounter = 10;
-				flashCounter = 10;
-				this.visible = true;
-				flashing = false;
-			} else {
-				if (flashDurationCounter > 0) {
-					this.visible = flashCounter <= 5;
-					flashDurationCounter--;
-				} else {
-					this.visible = true;
-					flashDurationCounter = 10;
-					flashCounter--;
-				}
-			}
-		} 
+		addInput();
+			tick++;
+		}
+
+	public void addInput() {
 		if (InputUtility.getKeyPressed(KeyCode.LEFT)) {
 			turnleft();
 			this.direction=2;
@@ -130,9 +87,7 @@ public class Tank extends CollidableEntity {
 				this.fire = true;
 				lastTick+=50;
 			}
-			//tick++;
 		}
-		tick++;
 	}
 	public void decreaseHp() {
 		if(this.isHpdecrese) {
@@ -171,20 +126,39 @@ public class Tank extends CollidableEntity {
 			}
 		}
 	}
-	
+	private void checkPlaneDead() {
+		for(IRenderable i:RenderableHolder.getInstance().getEntities()) {
+			if(this.collideWith((CollidableEntity)i)){
+				if((i instanceof Bullet)&&(((Bullet)i).isEnemy)){	
+					((Bullet)i).destroyed=true;
+					this.decreaseHp();
+				}
+				if(i instanceof Boss) {
+					this.destroyed=true;	
+				}
+				if(i instanceof Bomb) {
+					decreaseHp() ;
+				}
+				if(i instanceof Laser) {
+					((Laser)i).destroyed=true;
+					decreaseHp() ;
+				}
+				if(i instanceof Enemy) {
+					decreaseHp() ;
+				}
+			}
+		}
+		if(this.hp==0) {
+			hit2.play();
+			this.destroyed=true;
+		}
+		if(tick%60==0) {
+			isHpdecrese=true;
+		}
+	}
 
 	@Override
 	public void draw(GraphicsContext gc) {
-//		gc.setFill(Color.BLUE);
-//		gc.fillArc(x - radius, y - radius, radius * 2, radius * 2, 0, 360, ArcType.OPEN);
-//		gc.translate(x, y);
-//		gc.rotate(angle);
-//		gc.setFill(Color.YELLOW);
-//
-//		int gunSize = radius / 5;
-//		gc.fillRect(0, -gunSize, radius * 3 / 2, gunSize * 2);
-//		gc.rotate(-angle);
-//		gc.translate(-x, -y);
 		gc.setGlobalAlpha(1);
 		gc.drawImage(image, x, y);
 	}

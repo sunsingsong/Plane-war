@@ -20,12 +20,8 @@ public class Enemy extends CollidableEntity {
 	public int direction = 0;
 	public boolean fire = false;
 	public int levelEnemy = 1;
-	public  boolean changeLevel=true;
 	private static final int speed = 3;
-	private int angle = 0; // angle 0 = EAST
-	private boolean flashing = false;
-	private int flashCounter = 0;
-	private int flashDurationCounter = 0;
+	
 
 	public Enemy(int x, int y) {
 		this.width = 40;
